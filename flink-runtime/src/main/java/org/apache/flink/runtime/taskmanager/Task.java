@@ -934,7 +934,7 @@ public class Task
             taskManagerActions.updateTaskExecutionState(
                     new TaskExecutionState(executionId, ExecutionState.RUNNING));
 
-            runWithSystemExitMonitoring(finalInvokable::invoke);
+            runWithSystemExitMonitoring(finalInvokable::invoke); // todo by guixian: run 的是什么？
         } catch (Throwable throwable) {
             try {
                 runWithSystemExitMonitoring(() -> finalInvokable.cleanUp(throwable));

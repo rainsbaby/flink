@@ -33,8 +33,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Runner for the {@link org.apache.flink.runtime.dispatcher.Dispatcher} which is responsible for
- * the leader election.
+ * 负责Dispatcher 的 Leader 选举，选举成为 Leader 后启动 Dispatcher. Runner for the {@link
+ * org.apache.flink.runtime.dispatcher.Dispatcher} which is responsible for the leader election.
  */
 public final class DefaultDispatcherRunner implements DispatcherRunner, LeaderContender {
 
@@ -42,7 +42,7 @@ public final class DefaultDispatcherRunner implements DispatcherRunner, LeaderCo
 
     private final Object lock = new Object();
 
-    private final LeaderElectionService leaderElectionService;
+    private final LeaderElectionService leaderElectionService; // todo by guixian: ???
 
     private final FatalErrorHandler fatalErrorHandler;
 
@@ -54,7 +54,7 @@ public final class DefaultDispatcherRunner implements DispatcherRunner, LeaderCo
 
     private boolean running;
 
-    private DispatcherLeaderProcess dispatcherLeaderProcess;
+    private DispatcherLeaderProcess dispatcherLeaderProcess; // 管理 Dispatcher Leader
 
     private CompletableFuture<Void> previousDispatcherLeaderProcessTerminationFuture;
 
@@ -109,7 +109,9 @@ public final class DefaultDispatcherRunner implements DispatcherRunner, LeaderCo
                             getClass().getSimpleName(),
                             leaderSessionID,
                             DispatcherLeaderProcess.class.getSimpleName());
-                    startNewDispatcherLeaderProcess(leaderSessionID);
+                    startNewDispatcherLeaderProcess(
+                            leaderSessionID); // 成为Leader后,创建 DispatcherLeaderProcess， 启动
+                    // Dispatcher，启动RPC服务
                 });
     }
 
@@ -187,7 +189,7 @@ public final class DefaultDispatcherRunner implements DispatcherRunner, LeaderCo
                             getClass().getSimpleName(),
                             dispatcherLeaderProcess.getLeaderSessionId(),
                             DispatcherLeaderProcess.class.getSimpleName());
-                    this.stopDispatcherLeaderProcess();
+                    this.stopDispatcherLeaderProcess(); // 停止DispatcherLeaderProcess
                 });
     }
 

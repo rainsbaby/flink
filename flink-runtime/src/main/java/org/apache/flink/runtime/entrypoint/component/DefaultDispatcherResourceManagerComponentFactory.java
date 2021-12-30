@@ -97,6 +97,7 @@ public class DefaultDispatcherResourceManagerComponentFactory
         this.restEndpointFactory = restEndpointFactory;
     }
 
+    // 启动Dispatcher、ResourceManager、WebUI Endpoint
     @Override
     public DispatcherResourceManagerComponent create(
             Configuration configuration,
@@ -118,6 +119,7 @@ public class DefaultDispatcherResourceManagerComponentFactory
         DispatcherRunner dispatcherRunner = null;
 
         try {
+            // dispatcherLeaderRetrievalService 与 resourceManagerRetrievalService，监听zk/k8s中不同的路径
             dispatcherLeaderRetrievalService =
                     highAvailabilityServices.getDispatcherLeaderRetriever();
 
@@ -157,6 +159,7 @@ public class DefaultDispatcherResourceManagerComponentFactory
                                     dispatcherGatewayRetriever,
                                     executor);
 
+            // WebUI, DispatcherRestEndpoint
             webMonitorEndpoint =
                     restEndpointFactory.createRestEndpoint(
                             configuration,
@@ -208,9 +211,11 @@ public class DefaultDispatcherResourceManagerComponentFactory
                             ioExecutor);
 
             log.debug("Starting Dispatcher.");
+            // DispatcherRunnerLeaderElectionLifecycleManager
             dispatcherRunner =
                     dispatcherRunnerFactory.createDispatcherRunner(
-                            highAvailabilityServices.getDispatcherLeaderElectionService(),
+                            highAvailabilityServices
+                                    .getDispatcherLeaderElectionService(), // highAvailabilityServices决定使用ZK/K8S
                             fatalErrorHandler,
                             new HaServicesJobGraphStoreFactory(highAvailabilityServices),
                             ioExecutor,

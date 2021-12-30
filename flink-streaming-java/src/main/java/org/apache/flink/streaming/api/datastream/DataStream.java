@@ -1206,7 +1206,7 @@ public class DataStream<T> {
         SingleOutputStreamOperator<R> returnStream =
                 new SingleOutputStreamOperator(environment, resultTransform);
 
-        getExecutionEnvironment().addOperator(resultTransform);
+        getExecutionEnvironment().addOperator(resultTransform); // add transformation
 
         return returnStream;
     }

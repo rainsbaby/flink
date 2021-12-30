@@ -220,6 +220,7 @@ public class DefaultLeaderElectionService
         }
     }
 
+    // 丢失Leader低位之后。
     @Override
     @GuardedBy("lock")
     public void onRevokeLeadership() {

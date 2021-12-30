@@ -29,6 +29,7 @@ if [[ $STARTSTOP != "start" ]] && [[ $STARTSTOP != "start-foreground" ]] && [[ $
   exit 1
 fi
 
+
 bin=`dirname "$0"`
 bin=`cd "$bin"; pwd`
 
@@ -60,5 +61,6 @@ fi
 if [[ $STARTSTOP == "start-foreground" ]]; then
     exec "${FLINK_BIN_DIR}"/flink-console.sh $ENTRYPOINT "${args[@]}"
 else
+  echo 'ENTRYPOINT: ' $ENTRYPOINT
     "${FLINK_BIN_DIR}"/flink-daemon.sh $STARTSTOP $ENTRYPOINT "${args[@]}"
 fi

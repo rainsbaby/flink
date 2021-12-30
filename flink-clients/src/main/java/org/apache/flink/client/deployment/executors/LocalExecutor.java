@@ -79,7 +79,8 @@ public class LocalExecutor implements PipelineExecutor {
         // we only support attached execution with the local executor.
         checkState(configuration.getBoolean(DeploymentOptions.ATTACHED));
 
-        final JobGraph jobGraph = getJobGraph(pipeline, effectiveConfig);
+        final JobGraph jobGraph =
+                getJobGraph(pipeline, effectiveConfig); // client端，基于StreamGraph生成JobGraph
 
         return PerJobMiniClusterFactory.createWithFactory(effectiveConfig, miniClusterFactory)
                 .submitJob(jobGraph, userCodeClassloader);

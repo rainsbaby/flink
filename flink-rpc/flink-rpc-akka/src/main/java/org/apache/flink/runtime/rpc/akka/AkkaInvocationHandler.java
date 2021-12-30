@@ -120,7 +120,7 @@ class AkkaInvocationHandler implements InvocationHandler, AkkaBasedEndpoint, Rpc
 
         Object result;
 
-        if (declaringClass.equals(AkkaBasedEndpoint.class)
+        if (declaringClass.equals(AkkaBasedEndpoint.class) // todo by guixian: 这部分的作用是什么？
                 || declaringClass.equals(Object.class)
                 || declaringClass.equals(RpcGateway.class)
                 || declaringClass.equals(StartStoppable.class)

@@ -91,7 +91,8 @@ public interface RpcSystem extends RpcSystemUtils, AutoCloseable {
      */
     static RpcSystem load(Configuration config) {
         final Iterator<RpcSystemLoader> iterator =
-                ServiceLoader.load(RpcSystemLoader.class).iterator();
+                ServiceLoader.load(RpcSystemLoader.class)
+                        .iterator(); // file org.apache.flink.runtime.rpc.RpcSystemLoader
 
         Exception loadError = null;
         while (iterator.hasNext()) {

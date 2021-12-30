@@ -54,7 +54,7 @@ public class AkkaRpcSystemLoader implements RpcSystemLoader {
                             tmpDirectory.resolve("flink-rpc-akka_" + UUID.randomUUID() + ".jar"));
 
             final InputStream resourceStream =
-                    flinkClassLoader.getResourceAsStream("flink-rpc-akka.jar");
+                    flinkClassLoader.getResourceAsStream("flink-rpc-akka.jar"); // pom中配置jar的来源
             if (resourceStream == null) {
                 throw new RuntimeException(
                         "Akka RPC system could not be found. If this happened while running a test in the IDE,"

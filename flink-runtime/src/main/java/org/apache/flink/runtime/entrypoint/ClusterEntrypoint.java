@@ -184,7 +184,7 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
                     PluginUtils.createPluginManagerFromRootFolder(configuration);
             configureFileSystems(configuration, pluginManager);
 
-            SecurityContext securityContext = installSecurityContext(configuration);
+            SecurityContext securityContext = installSecurityContext(configuration); // 登陆Hadoop等
 
             ClusterEntrypointUtils.configureUncaughtExceptionHandler(configuration);
             securityContext.runSecured(
@@ -240,7 +240,7 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
     private void runCluster(Configuration configuration, PluginManager pluginManager)
             throws Exception {
         synchronized (lock) {
-            initializeServices(configuration, pluginManager);
+            initializeServices(configuration, pluginManager); // 初始化各种service
 
             // write host information into configuration
             configuration.setString(JobManagerOptions.ADDRESS, commonRpcService.getAddress());
@@ -250,6 +250,7 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
                     dispatcherResourceManagerComponentFactory =
                             createDispatcherResourceManagerComponentFactory(configuration);
 
+            // 核心部分
             clusterComponent =
                     dispatcherResourceManagerComponentFactory.create(
                             configuration,
@@ -296,7 +297,7 @@ public abstract class ClusterEntrypoint implements AutoCloseableAsync, FatalErro
         synchronized (lock) {
             rpcSystem = RpcSystem.load(configuration);
 
-            commonRpcService =
+            commonRpcService = // todo: 具体逻辑？JobManager发送和接收RPC命令的逻辑是？
                     RpcUtils.createRemoteRpcService(
                             rpcSystem,
                             configuration,

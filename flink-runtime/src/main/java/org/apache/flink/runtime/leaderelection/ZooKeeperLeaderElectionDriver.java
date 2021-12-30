@@ -46,9 +46,9 @@ import java.util.UUID;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * {@link LeaderElectionDriver} implementation for Zookeeper. The leading JobManager is elected
- * using ZooKeeper. The current leader's address as well as its leader session ID is published via
- * ZooKeeper.
+ * 利用ZK实现 JobManager 的 HighAvailability。 {@link LeaderElectionDriver} implementation for Zookeeper.
+ * The leading JobManager is elected using ZooKeeper. The current leader's address as well as its
+ * leader session ID is published via ZooKeeper.
  */
 public class ZooKeeperLeaderElectionDriver implements LeaderElectionDriver, LeaderLatchListener {
 
@@ -71,7 +71,7 @@ public class ZooKeeperLeaderElectionDriver implements LeaderElectionDriver, Lead
     private final ConnectionStateListener listener =
             (client, newState) -> handleStateChange(newState);
 
-    private final LeaderElectionEventHandler leaderElectionEventHandler;
+    private final LeaderElectionEventHandler leaderElectionEventHandler; // 处理Leader 变更事件
 
     private final FatalErrorHandler fatalErrorHandler;
 
@@ -157,11 +157,13 @@ public class ZooKeeperLeaderElectionDriver implements LeaderElectionDriver, Lead
         return leaderLatch.hasLeadership();
     }
 
+    // 成为 Leader
     @Override
     public void isLeader() {
         leaderElectionEventHandler.onGrantLeadership();
     }
 
+    // 丢失 Leader 地位
     @Override
     public void notLeader() {
         leaderElectionEventHandler.onRevokeLeadership();

@@ -93,9 +93,10 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * Base class for the Dispatcher component. The Dispatcher component is responsible for receiving
- * job submissions, persisting them, spawning JobManagers to execute the jobs and to recover them in
- * case of a master failure. Furthermore, it knows about the state of the Flink session cluster.
+ * 负责job的提交、存储、JobManager生成及恢复. Base class for the Dispatcher component. The Dispatcher component is
+ * responsible for receiving job submissions, persisting them, spawning JobManagers to execute the
+ * jobs and to recover them in case of a master failure. Furthermore, it knows about the state of
+ * the Flink session cluster.
  */
 public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<DispatcherId>
         implements DispatcherGateway {
@@ -111,7 +112,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
     private final GatewayRetriever<ResourceManagerGateway> resourceManagerGatewayRetriever;
     private final JobManagerSharedServices jobManagerSharedServices;
     private final HeartbeatServices heartbeatServices;
-    private final BlobServer blobServer;
+    private final BlobServer blobServer; // 负责 jar 包管理
 
     private final FatalErrorHandler fatalErrorHandler;
 
@@ -214,7 +215,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
             throw exception;
         }
 
-        startRecoveredJobs();
+        startRecoveredJobs(); // 恢复 job
         this.dispatcherBootstrap =
                 this.dispatcherBootstrapFactory.create(
                         getSelfGateway(DispatcherGateway.class),
@@ -375,7 +376,10 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
         log.info("Submitting job '{}' ({}).", jobGraph.getName(), jobGraph.getJobID());
 
         final CompletableFuture<Acknowledge> persistAndRunFuture =
-                waitForTerminatingJob(jobGraph.getJobID(), jobGraph, this::persistAndRunJob)
+                waitForTerminatingJob(
+                                jobGraph.getJobID(),
+                                jobGraph,
+                                this::persistAndRunJob) // 执行job并等待执行完成
                         .thenApply(ignored -> Acknowledge.get());
 
         return persistAndRunFuture.handleAsync(
@@ -400,15 +404,15 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
     }
 
     private void persistAndRunJob(JobGraph jobGraph) throws Exception {
-        jobGraphWriter.putJobGraph(jobGraph);
-        runJob(jobGraph, ExecutionType.SUBMISSION);
+        jobGraphWriter.putJobGraph(jobGraph); // 存储 jobGraph 到zk等处
+        runJob(jobGraph, ExecutionType.SUBMISSION); // 执行 jobGraph
     }
 
     private void runJob(JobGraph jobGraph, ExecutionType executionType) throws Exception {
         Preconditions.checkState(!runningJobs.containsKey(jobGraph.getJobID()));
         long initializationTimestamp = System.currentTimeMillis();
         JobManagerRunner jobManagerRunner =
-                createJobManagerRunner(jobGraph, initializationTimestamp);
+                createJobManagerRunner(jobGraph, initializationTimestamp); // 创建JobManager，并启动job
 
         runningJobs.put(jobGraph.getJobID(), jobManagerRunner);
 

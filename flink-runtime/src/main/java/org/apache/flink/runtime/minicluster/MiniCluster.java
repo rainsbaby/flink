@@ -357,12 +357,18 @@ public class MiniCluster implements AutoCloseableAsync {
                         Executors.newFixedThreadPool(
                                 ClusterEntrypointUtils.getPoolSize(configuration),
                                 new ExecutorThreadFactory("mini-cluster-io"));
-                haServices = createHighAvailabilityServices(configuration, ioExecutor);
+                haServices =
+                        createHighAvailabilityServices(
+                                configuration, ioExecutor); // HighAvailability
 
-                blobServer = new BlobServer(configuration, haServices.createBlobStore());
+                blobServer =
+                        new BlobServer(
+                                configuration,
+                                haServices.createBlobStore()); // 接收进入的请求，并分配给 BlobServerConn线程处理.
+                // BlobClient 与 BlobServer建立连接.
                 blobServer.start();
 
-                heartbeatServices = HeartbeatServices.fromConfiguration(configuration);
+                heartbeatServices = HeartbeatServices.fromConfiguration(configuration); // heartbeat
 
                 blobCacheService =
                         new BlobCacheService(
@@ -371,12 +377,13 @@ public class MiniCluster implements AutoCloseableAsync {
                                 new InetSocketAddress(
                                         InetAddress.getLocalHost(), blobServer.getPort()));
 
-                startTaskManagers();
+                startTaskManagers(); // 启动TaskManager
 
                 MetricQueryServiceRetriever metricQueryServiceRetriever =
                         new RpcMetricQueryServiceRetriever(
                                 metricRegistry.getMetricQueryServiceRpcService());
 
+                // 启动 Dispatcher、ResourceManager
                 setupDispatcherResourceManagerComponents(
                         configuration,
                         dispatcherResourceManagerComponentRpcServiceFactory,
@@ -403,7 +410,9 @@ public class MiniCluster implements AutoCloseableAsync {
                                         21, Duration.ofMillis(5L), Duration.ofMillis(20L)));
                 webMonitorLeaderRetriever = new LeaderRetriever();
 
-                resourceManagerLeaderRetriever.start(resourceManagerGatewayRetriever);
+                // 开始监听ResourceManager、Dispatcher、WebMonitor的leader变更，获取相应的leader
+                resourceManagerLeaderRetriever.start(
+                        resourceManagerGatewayRetriever); // 获取ResourceManager 的 Leader
                 dispatcherLeaderRetriever.start(dispatcherGatewayRetriever);
                 clusterRestEndpointLeaderRetrievalService.start(webMonitorLeaderRetriever);
             } catch (Exception e) {
@@ -650,7 +659,7 @@ public class MiniCluster implements AutoCloseableAsync {
                             taskManagerTerminatingFatalErrorHandlerFactory.create(
                                     taskManagers.size()));
 
-            taskExecutor.start();
+            taskExecutor.start(); // Call rpc to start task executor
             taskManagers.add(taskExecutor);
         }
     }
@@ -841,13 +850,16 @@ public class MiniCluster implements AutoCloseableAsync {
         }
     }
 
+    // todo by guixian: 每一步.
     public CompletableFuture<JobSubmissionResult> submitJob(JobGraph jobGraph) {
         final CompletableFuture<DispatcherGateway> dispatcherGatewayFuture =
-                getDispatcherGatewayFuture();
+                getDispatcherGatewayFuture(); // 监听并获取Dispatcher的Leader信息
         final CompletableFuture<InetSocketAddress> blobServerAddressFuture =
                 createBlobServerAddress(dispatcherGatewayFuture);
         final CompletableFuture<Void> jarUploadFuture =
-                uploadAndSetJobFiles(blobServerAddressFuture, jobGraph);
+                uploadAndSetJobFiles(
+                        blobServerAddressFuture,
+                        jobGraph); // 创建BlobClient，与BlobServer建立连接，上传jar到 BlobServer
         final CompletableFuture<Acknowledge> acknowledgeCompletableFuture =
                 jarUploadFuture
                         .thenCombine(
@@ -903,7 +915,9 @@ public class MiniCluster implements AutoCloseableAsync {
                 .thenApply(
                         dispatcherGateway ->
                                 dispatcherGateway
-                                        .getBlobServerPort(rpcTimeout)
+                                        .getBlobServerPort(
+                                                rpcTimeout) // todo by guixian: blobserver 与
+                                        // dispatcher 的关系？
                                         .thenApply(
                                                 blobServerPort ->
                                                         new InetSocketAddress(

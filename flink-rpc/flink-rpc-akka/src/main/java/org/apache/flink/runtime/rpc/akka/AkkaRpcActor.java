@@ -146,6 +146,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
         state = state.finishTermination();
     }
 
+    // 不同类型消息的处理
     @Override
     public Receive createReceive() {
         return ReceiveBuilder.create()
@@ -615,6 +616,7 @@ class AkkaRpcActor<T extends RpcEndpoint & RpcGateway> extends AbstractActor {
     enum StoppedState implements State {
         STOPPED;
 
+        // 从 STOPPED 状态开始 start
         @Override
         public State start(AkkaRpcActor<?> akkaRpcActor, ClassLoader flinkClassLoader) {
             akkaRpcActor.mainThreadValidator.enterMainThread();

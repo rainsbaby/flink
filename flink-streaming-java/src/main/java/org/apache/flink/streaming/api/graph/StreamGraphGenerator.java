@@ -311,7 +311,7 @@ public class StreamGraphGenerator {
 
         alreadyTransformed = new HashMap<>();
 
-        for (Transformation<?> transformation : transformations) {
+        for (Transformation<?> transformation : transformations) { // source之后的处理，即为transformations
             transform(transformation);
         }
 

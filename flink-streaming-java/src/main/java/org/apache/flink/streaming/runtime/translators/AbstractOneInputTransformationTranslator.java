@@ -88,7 +88,7 @@ abstract class AbstractOneInputTransformationTranslator<IN, OUT, OP extends Tran
                         + parentTransformations.size());
 
         for (Integer inputId : context.getStreamNodeIds(parentTransformations.get(0))) {
-            streamGraph.addEdge(inputId, transformationId, 0);
+            streamGraph.addEdge(inputId, transformationId, 0); // Add Edge
         }
 
         return Collections.singleton(transformationId);

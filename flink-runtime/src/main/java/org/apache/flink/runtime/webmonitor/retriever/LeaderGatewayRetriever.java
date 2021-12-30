@@ -45,6 +45,7 @@ public abstract class LeaderGatewayRetriever<T extends RpcGateway> extends Leade
         atomicGatewayFuture = new AtomicReference<>(initialGatewayFuture);
     }
 
+    // todo by guixian: ???
     @Override
     public CompletableFuture<T> getFuture() {
         final CompletableFuture<T> currentGatewayFuture = atomicGatewayFuture.get();

@@ -72,7 +72,7 @@ public final class PerJobMiniClusterFactory {
         MiniClusterConfiguration miniClusterConfig =
                 getMiniClusterConfig(jobGraph.getMaximumParallelism());
         MiniCluster miniCluster = miniClusterFactory.apply(miniClusterConfig);
-        miniCluster.start();
+        miniCluster.start(); // 启动MiniCluster，包括TaskManager等
 
         return miniCluster
                 .submitJob(jobGraph)

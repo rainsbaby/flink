@@ -1911,9 +1911,9 @@ public class StreamExecutionEnvironment {
      */
     public JobExecutionResult execute(String jobName) throws Exception {
         Preconditions.checkNotNull(jobName, "Streaming Job name should not be null.");
-        final StreamGraph streamGraph = getStreamGraph();
+        final StreamGraph streamGraph = getStreamGraph(); // 生成StreamGraph，包含StreamNode，Edge等信息
         streamGraph.setJobName(jobName);
-        return execute(streamGraph);
+        return execute(streamGraph); // 提交任务
     }
 
     /**

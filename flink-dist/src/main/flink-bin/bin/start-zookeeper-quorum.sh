@@ -39,7 +39,7 @@ while read server ; do
         id=${BASH_REMATCH[1]}
         address=${BASH_REMATCH[2]}
 
-        ssh -n $FLINK_SSH_OPTS $address -- "nohup /bin/bash -l $FLINK_BIN_DIR/zookeeper.sh start $id &"
+        ssh -n $FLINK_SSH_OPTS $address -- "nohup /bin/bash -l $FLINK_BIN_DIR/zookeeper.sh start $id &" # TODO：ssh后执行失败，没有ssh时可以成功执行
     else
         echo "[WARN] Parse error. Skipping config entry '$server'."
     fi

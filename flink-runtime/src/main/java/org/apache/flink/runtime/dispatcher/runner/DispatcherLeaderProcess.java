@@ -26,7 +26,10 @@ import org.apache.flink.util.AutoCloseableAsync;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-/** Leader process which encapsulates the lifecycle of the {@link Dispatcher} component. */
+/**
+ * 管理 Dispatcher 的 创建. Leader process which encapsulates the lifecycle of the {@link Dispatcher}
+ * component.
+ */
 interface DispatcherLeaderProcess extends AutoCloseableAsync {
 
     void start();

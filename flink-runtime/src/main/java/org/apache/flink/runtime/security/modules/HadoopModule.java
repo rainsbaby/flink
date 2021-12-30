@@ -61,6 +61,7 @@ public class HadoopModule implements SecurityModule {
         return securityConfig;
     }
 
+    /** 用户登陆. */
     @Override
     public void install() throws SecurityInstallException {
 

@@ -228,7 +228,10 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
             long initializationTimestamp)
             throws Exception {
 
-        super(rpcService, RpcServiceUtils.createRandomName(JOB_MANAGER_NAME), jobMasterId);
+        super(
+                rpcService,
+                RpcServiceUtils.createRandomName(JOB_MANAGER_NAME),
+                jobMasterId); // 启动RPC节点
 
         final ExecutionDeploymentReconciliationHandler executionStateReconciliationHandler =
                 new ExecutionDeploymentReconciliationHandler() {

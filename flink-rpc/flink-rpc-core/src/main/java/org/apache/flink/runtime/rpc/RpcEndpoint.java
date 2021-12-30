@@ -124,7 +124,7 @@ public abstract class RpcEndpoint implements RpcGateway, AutoCloseableAsync {
         this.rpcService = checkNotNull(rpcService, "rpcService");
         this.endpointId = checkNotNull(endpointId, "endpointId");
 
-        this.rpcServer = rpcService.startServer(this);
+        this.rpcServer = rpcService.startServer(this); // 启动 AkkaRpcActor，并获取相应的 rpcServer
 
         this.mainThreadExecutor = new MainThreadExecutor(rpcServer, this::validateRunsInMainThread);
     }

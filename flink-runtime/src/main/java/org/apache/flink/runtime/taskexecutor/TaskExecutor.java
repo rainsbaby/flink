@@ -222,7 +222,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     private final ShuffleEnvironment<?, ?> shuffleEnvironment;
 
     /** The kvState registration service in the task manager. */
-    private final KvStateService kvStateService;
+    private final KvStateService kvStateService; // ？？
 
     private final Executor ioExecutor;
 
@@ -284,7 +284,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
             FatalErrorHandler fatalErrorHandler,
             TaskExecutorPartitionTracker partitionTracker) {
 
-        super(rpcService, RpcServiceUtils.createRandomName(TASK_MANAGER_NAME));
+        super(rpcService, RpcServiceUtils.createRandomName(TASK_MANAGER_NAME)); // 启动rpc节点
 
         checkArgument(
                 taskManagerConfiguration.getNumberSlots() > 0,
@@ -388,6 +388,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     //  Life cycle
     // ------------------------------------------------------------------------
 
+    // TODO by guixian: 核心内容
     @Override
     public void onStart() throws Exception {
         try {
@@ -558,6 +559,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     // Task lifecycle RPCs
     // ----------------------------------------------------------------------
 
+    // TODO by guixian: 核心内容
     @Override
     public CompletableFuture<Acknowledge> submitTask(
             TaskDeploymentDescriptor tdd, JobMasterId jobMasterId, Time timeout) {
@@ -605,7 +607,8 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
 
             // re-integrate offloaded data:
             try {
-                tdd.loadBigData(blobCacheService.getPermanentBlobService());
+                tdd.loadBigData(
+                        blobCacheService.getPermanentBlobService()); // todo by guixian: 如何存储？
             } catch (IOException | ClassNotFoundException e) {
                 throw new TaskSubmissionException(
                         "Could not re-integrate offloaded TaskDeploymentDescriptor data.", e);

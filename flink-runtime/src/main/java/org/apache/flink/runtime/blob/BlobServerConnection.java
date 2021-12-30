@@ -324,7 +324,7 @@ class BlobServerConnection extends Thread {
 
             final BlobKey.BlobType blobType;
             {
-                final int read = inputStream.read();
+                final int read = inputStream.read(); // get blob type
                 if (read < 0) {
                     throw new EOFException("Read an incomplete BLOB type");
                 } else if (read == TRANSIENT_BLOB.ordinal()) {

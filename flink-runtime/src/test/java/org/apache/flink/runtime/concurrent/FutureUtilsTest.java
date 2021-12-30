@@ -86,17 +86,18 @@ public class FutureUtilsTest extends TestLogger {
         final AtomicInteger atomicInteger = new AtomicInteger(0);
         CompletableFuture<Boolean> retryFuture =
                 FutureUtils.retry(
-                        () ->
-                                CompletableFuture.supplyAsync(
-                                        () -> {
-                                            if (atomicInteger.incrementAndGet() == retries) {
-                                                return true;
-                                            } else {
-                                                throw new CompletionException(
-                                                        new FlinkException("Test exception"));
-                                            }
-                                        },
-                                        TestingUtils.defaultExecutor()),
+                        () -> {
+                            return CompletableFuture.supplyAsync(
+                                    () -> {
+                                        if (atomicInteger.incrementAndGet() == retries) {
+                                            return true;
+                                        } else {
+                                            throw new CompletionException(
+                                                    new FlinkException("Test exception"));
+                                        }
+                                    },
+                                    TestingUtils.defaultExecutor());
+                        },
                         retries,
                         TestingUtils.defaultExecutor());
 

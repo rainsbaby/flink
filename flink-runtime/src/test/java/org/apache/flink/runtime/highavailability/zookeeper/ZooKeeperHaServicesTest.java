@@ -104,7 +104,10 @@ public class ZooKeeperHaServicesTest extends TestLogger {
 
         final TestingBlobStoreService blobStoreService = new TestingBlobStoreService();
 
-        runCleanupTest(configuration, blobStoreService, ZooKeeperHaServices::close);
+        runCleanupTest(
+                configuration,
+                blobStoreService,
+                zooKeeperHaServices -> zooKeeperHaServices.close());
 
         assertThat(blobStoreService.isClosed(), is(true));
         assertThat(blobStoreService.isClosedAndCleanedUpAllData(), is(false));
