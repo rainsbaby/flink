@@ -35,6 +35,9 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
+ * 管理TM的所有slots，处理slot申请请求。
+ * 当slots不足时，SlotManager会通过allocateResource通知ResourceManager。
+ *
  * The slot manager is responsible for maintaining a view on all registered task manager slots,
  * their allocation and all pending slot requests. Whenever a new slot is registered or an allocated
  * slot is freed, then it tries to fulfill another pending slot request. Whenever there are not

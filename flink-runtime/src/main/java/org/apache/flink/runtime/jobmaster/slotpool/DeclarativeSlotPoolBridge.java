@@ -96,6 +96,7 @@ public class DeclarativeSlotPoolBridge extends DeclarativeSlotPoolService implem
 
         getDeclarativeSlotPool().registerNewSlotsListener(this::newSlotsAreAvailable);
 
+        // 检查空闲slot
         componentMainThreadExecutor.schedule(
                 this::checkIdleSlotTimeout,
                 idleSlotTimeout.toMilliseconds(),
@@ -140,6 +141,7 @@ public class DeclarativeSlotPoolBridge extends DeclarativeSlotPoolService implem
         getDeclarativeSlotPool().decreaseResourceRequirementsBy(previouslyFulfilledRequirement);
     }
 
+    // 有空闲Slot时匹配pendingRequests
     @VisibleForTesting
     void newSlotsAreAvailable(Collection<? extends PhysicalSlot> newSlots) {
         final Collection<PendingRequestSlotMatching> matchingsToFulfill = new ArrayList<>();

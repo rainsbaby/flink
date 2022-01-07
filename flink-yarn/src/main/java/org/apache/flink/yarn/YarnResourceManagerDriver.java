@@ -108,9 +108,11 @@ public class YarnResourceManagerDriver extends AbstractResourceManagerDriver<Yar
 
     private final YarnNodeManagerClientFactory yarnNodeManagerClientFactory;
 
+    // todo by guixian: ???
     /** Client to communicate with the Resource Manager (YARN's master). */
     private AMRMClientAsync<AMRMClient.ContainerRequest> resourceManagerClient;
 
+    // todo by guixian: ???
     /** Client to communicate with the Node manager and launch TaskExecutor processes. */
     private NMClientAsync nodeManagerClient;
 

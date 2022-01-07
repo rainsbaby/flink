@@ -29,6 +29,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 /**
+ * 请求/释放外部资源。
+ * 目前包括Yarn和Kubernetes。
+ *
  * A {@link ResourceManagerDriver} is responsible for requesting and releasing resources from/to a
  * particular external resource manager.
  */

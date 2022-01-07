@@ -222,13 +222,13 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     private final ShuffleEnvironment<?, ?> shuffleEnvironment;
 
     /** The kvState registration service in the task manager. */
-    private final KvStateService kvStateService; // ？？
+    private final KvStateService kvStateService; // todo by guixian: ???
 
     private final Executor ioExecutor;
 
     // --------- task slot allocation table -----------
 
-    private final TaskSlotTable<Task> taskSlotTable;
+    private final TaskSlotTable<Task> taskSlotTable; // todo by guixian: ???
 
     private final Map<JobID, UUID> currentSlotOfferPerJob = new HashMap<>();
 
@@ -388,7 +388,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     //  Life cycle
     // ------------------------------------------------------------------------
 
-    // TODO by guixian: 核心内容
+    // 核心内容，启动流程
     @Override
     public void onStart() throws Exception {
         try {
@@ -607,8 +607,9 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
 
             // re-integrate offloaded data:
             try {
+                // 从BlobCache中load Job和Task信息
                 tdd.loadBigData(
-                        blobCacheService.getPermanentBlobService()); // todo by guixian: 如何存储？
+                        blobCacheService.getPermanentBlobService());
             } catch (IOException | ClassNotFoundException e) {
                 throw new TaskSubmissionException(
                         "Could not re-integrate offloaded TaskDeploymentDescriptor data.", e);
@@ -1037,6 +1038,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     // Slot allocation RPCs
     // ----------------------------------------------------------------------
 
+    // todo by guixian: ??? 何处开始调用
     @Override
     public CompletableFuture<Acknowledge> requestSlot(
             final SlotID slotId,

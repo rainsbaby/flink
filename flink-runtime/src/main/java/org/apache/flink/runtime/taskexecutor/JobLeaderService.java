@@ -23,6 +23,8 @@ import org.apache.flink.runtime.highavailability.HighAvailabilityServices;
 import org.apache.flink.runtime.rpc.RpcService;
 
 /**
+ * 监听job相关的JobManager的Leader变化。
+ *
  * This service has the responsibility to monitor the job leaders (the job manager which is leader
  * for a given job) for all registered jobs. Upon gaining leadership for a job and detection by the
  * job leader service, the service tries to establish a connection to the job leader. After

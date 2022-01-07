@@ -93,6 +93,9 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * ExecutionVertex的一次执行。
+ * ExecutionVertex多次执行时，对应不同的Execution。
+ *
  * A single execution of a vertex. While an {@link ExecutionVertex} can be executed multiple times
  * (for recovery, re-computation, re-configuration), this class tracks the state of a single
  * execution of that vertex and the resources.

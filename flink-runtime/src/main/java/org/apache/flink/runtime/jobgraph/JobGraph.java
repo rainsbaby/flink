@@ -53,6 +53,9 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * JobManager接收JobGraph进行调用。
+ * JobGraph是由vertices及中间结果构成一个DAG。
+ *
  * The JobGraph represents a Flink dataflow program, at the low level that the JobManager accepts.
  * All programs from higher level APIs are transformed into JobGraphs.
  *
@@ -69,6 +72,7 @@ public class JobGraph implements Serializable {
 
     // --- job and configuration ---
 
+    // JobGraph的主要构成
     /** List of task vertices included in this job graph. */
     private final Map<JobVertexID, JobVertex> taskVertices =
             new LinkedHashMap<JobVertexID, JobVertex>();

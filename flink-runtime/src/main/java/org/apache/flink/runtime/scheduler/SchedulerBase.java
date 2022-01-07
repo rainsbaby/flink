@@ -114,7 +114,10 @@ import java.util.stream.StreamSupport;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
-/** Base class which can be used to implement {@link SchedulerNG}. */
+/**
+ * Job调度（start、cancel、stop等），及checkpoint创建.
+ *
+ * Base class which can be used to implement {@link SchedulerNG}. */
 public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling {
 
     private final Logger log;
@@ -186,6 +189,7 @@ public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling
                 SchedulerUtils.createCheckpointIDCounterIfCheckpointingIsEnabled(
                         jobGraph, checkNotNull(checkpointRecoveryFactory));
 
+        // 生成ExecutionGraph
         this.executionGraph =
                 createAndRestoreExecutionGraph(
                         completedCheckpointStore,
@@ -582,7 +586,7 @@ public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling
         mainThreadExecutor.assertRunningInMainThread();
         registerJobMetrics();
         operatorCoordinatorHandler.startAllOperatorCoordinators();
-        startSchedulingInternal();
+        startSchedulingInternal(); // 开始调度
     }
 
     private void registerJobMetrics() {

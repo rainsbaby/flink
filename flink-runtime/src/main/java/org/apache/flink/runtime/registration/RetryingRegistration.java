@@ -144,6 +144,7 @@ public abstract class RetryingRegistration<
             // trigger resolution of the target address to a callable gateway
             final CompletableFuture<G> rpcGatewayFuture;
 
+            // 建立连接
             if (FencedRpcGateway.class.isAssignableFrom(targetType)) {
                 rpcGatewayFuture =
                         (CompletableFuture<G>)
@@ -155,6 +156,7 @@ public abstract class RetryingRegistration<
                 rpcGatewayFuture = rpcService.connect(targetAddress, targetType);
             }
 
+            // 开始registration
             // upon success, start the registration attempts
             CompletableFuture<Void> rpcGatewayAcceptFuture =
                     rpcGatewayFuture.thenAcceptAsync(

@@ -191,6 +191,7 @@ public class ResourceManagerServiceImpl implements ResourceManagerService, Leade
                                 newLeaderSessionID);
 
                         try {
+                            // 成为Leader后，创建ResourceManager
                             startNewLeaderResourceManager(newLeaderSessionID);
                         } catch (Throwable t) {
                             fatalErrorHandler.onFatalError(

@@ -25,7 +25,10 @@ import javax.annotation.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-/** Service that maintains lifecycle of {@link ResourceManager}. */
+/**
+ * 管理ResourceManager
+ *
+ * Service that maintains lifecycle of {@link ResourceManager}. */
 public interface ResourceManagerService extends AutoCloseableAsync {
 
     /**

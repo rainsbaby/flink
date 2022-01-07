@@ -158,7 +158,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
 
     private final ClassLoader userCodeLoader;
 
-    private final SlotPoolService slotPoolService;
+    private final SlotPoolService slotPoolService; // 管理Slot
 
     private final long initializationTimestamp;
 
@@ -177,7 +177,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
 
     // --------- Scheduler --------
 
-    private final SchedulerNG schedulerNG;
+    private final SchedulerNG schedulerNG; // 负责job调度，包括start、cancel、stop job，及checkpoint创建
 
     private final JobManagerJobStatusListener jobStatusListener;
 
@@ -231,7 +231,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         super(
                 rpcService,
                 RpcServiceUtils.createRandomName(JOB_MANAGER_NAME),
-                jobMasterId); // 启动RPC节点
+                jobMasterId); // 启动相应RPC节点
 
         final ExecutionDeploymentReconciliationHandler executionStateReconciliationHandler =
                 new ExecutionDeploymentReconciliationHandler() {
@@ -874,7 +874,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         JobShuffleContext context = new JobShuffleContextImpl(jobGraph.getJobID(), this);
         shuffleMaster.registerJob(context);
 
-        startJobMasterServices();
+        startJobMasterServices(); // 启动JobMaster
 
         log.info(
                 "Starting execution of job '{}' ({}) under job master id {}.",
@@ -882,7 +882,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
                 jobGraph.getJobID(),
                 getFencingToken());
 
-        startScheduling();
+        startScheduling(); // 通过SchedulerNG开始生成ExecutionGraph，执行job
     }
 
     private void startJobMasterServices() throws Exception {
@@ -891,9 +891,11 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
             this.resourceManagerHeartbeatManager =
                     createResourceManagerHeartbeatManager(heartbeatServices);
 
+            // todo by guixian: ???
             // start the slot pool make sure the slot pool now accepts messages for this leader
             slotPoolService.start(getFencingToken(), getAddress(), getMainThreadExecutor());
 
+            // 获取ResourceManager的Leader，并与Leader建立连接
             // job is ready to go, try to establish connection with resource manager
             //   - activate leader retrieval for the resource manager
             //   - on notification of the leader, the connection will be established and

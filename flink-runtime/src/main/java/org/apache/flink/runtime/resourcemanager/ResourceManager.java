@@ -93,6 +93,8 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * ResourceManager负责资源申请/释放/管理
+ *
  * ResourceManager implementation. The resource manager is responsible for resource de-/allocation
  * and bookkeeping.
  *
@@ -132,6 +134,7 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
     /** Fatal error handler. */
     private final FatalErrorHandler fatalErrorHandler;
 
+    // todo by guixian: ???
     /** The slot manager maintains the available slots. */
     private final SlotManager slotManager;
 
@@ -164,6 +167,7 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
             Time rpcTimeout,
             Executor ioExecutor) {
 
+        // 启动相应RPC节点
         super(
                 rpcService,
                 RpcServiceUtils.createRandomName(RESOURCE_MANAGER_NAME),
@@ -227,17 +231,20 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
         }
     }
 
+    // todo by guixian: ???
     private void startResourceManagerServices() throws Exception {
         try {
-            jobLeaderIdService.start(new JobLeaderIdActionsImpl());
+            jobLeaderIdService.start(new JobLeaderIdActionsImpl()); // 检测JobManager的leader是否存在
 
             registerMetrics();
 
             startHeartbeatServices();
 
+            // todo by guixian: ???
             slotManager.start(
                     getFencingToken(), getMainThreadExecutor(), new ResourceActionsImpl());
 
+            // todo by guixian: ???
             initialize();
         } catch (Exception e) {
             handleStartResourceManagerServicesException(e);
@@ -1037,6 +1044,7 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
             JobManagerRegistration jobManagerRegistration = jobManagerRegistrations.get(jobId);
 
             if (Objects.equals(jobManagerRegistration.getJobMasterId(), oldJobMasterId)) {
+                // JobManager的leader失去leader地位后，RM关闭与其的连接。新的leader会通过注册与RM建立连接？
                 closeJobManagerConnection(
                         jobId,
                         ResourceRequirementHandling.RETAIN,

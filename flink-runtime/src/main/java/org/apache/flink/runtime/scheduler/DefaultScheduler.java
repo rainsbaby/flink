@@ -370,10 +370,10 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
         final Map<ExecutionVertexID, ExecutionVertexVersion> requiredVersionByVertex =
                 executionVertexVersioner.recordVertexModifications(verticesToDeploy);
 
-        transitionToScheduled(verticesToDeploy);
+        transitionToScheduled(verticesToDeploy); // todo by guixian: ???
 
         final List<SlotExecutionVertexAssignment> slotExecutionVertexAssignments =
-                allocateSlots(executionVertexDeploymentOptions);
+                allocateSlots(executionVertexDeploymentOptions); // 分配slot
 
         final List<DeploymentHandle> deploymentHandles =
                 createDeploymentHandles(
@@ -381,7 +381,7 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
                         deploymentOptionsByVertex,
                         slotExecutionVertexAssignments);
 
-        waitForAllSlotsAndDeploy(deploymentHandles);
+        waitForAllSlotsAndDeploy(deploymentHandles); // slots准备完成后开始deploy
     }
 
     private void validateDeploymentOptions(

@@ -93,7 +93,7 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * 负责job的提交、存储、JobManager生成及恢复. Base class for the Dispatcher component. The Dispatcher component is
+ * 负责job的提交、存储、JobManager生成及在JobManager的master宕机时进行恢复. Base class for the Dispatcher component. The Dispatcher component is
  * responsible for receiving job submissions, persisting them, spawning JobManagers to execute the
  * jobs and to recover them in case of a master failure. Furthermore, it knows about the state of
  * the Flink session cluster.
@@ -112,7 +112,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
     private final GatewayRetriever<ResourceManagerGateway> resourceManagerGatewayRetriever;
     private final JobManagerSharedServices jobManagerSharedServices;
     private final HeartbeatServices heartbeatServices;
-    private final BlobServer blobServer; // 负责 jar 包管理
+    private final BlobServer blobServer; // 负责jar包管理
 
     private final FatalErrorHandler fatalErrorHandler;
 
@@ -153,6 +153,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
             DispatcherBootstrapFactory dispatcherBootstrapFactory,
             DispatcherServices dispatcherServices)
             throws Exception {
+        // 启动相应rpc节点
         super(rpcService, RpcServiceUtils.createRandomName(DISPATCHER_NAME), fencingToken);
         checkNotNull(dispatcherServices);
 
@@ -411,8 +412,9 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
     private void runJob(JobGraph jobGraph, ExecutionType executionType) throws Exception {
         Preconditions.checkState(!runningJobs.containsKey(jobGraph.getJobID()));
         long initializationTimestamp = System.currentTimeMillis();
+        // 创建JobManagerRunner，并开始选举
         JobManagerRunner jobManagerRunner =
-                createJobManagerRunner(jobGraph, initializationTimestamp); // 创建JobManager，并启动job
+                createJobManagerRunner(jobGraph, initializationTimestamp);
 
         runningJobs.put(jobGraph.getJobID(), jobManagerRunner);
 
@@ -681,6 +683,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
         return CompletableFuture.completedFuture(blobServer.getPort());
     }
 
+    // todo by guixian: 主要流程？？？
     @Override
     public CompletableFuture<String> triggerSavepoint(
             final JobID jobId,

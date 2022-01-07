@@ -25,6 +25,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * 获取job对应的JobManager的leader。
+ *
  * Service which retrieves for a registered job the current job leader id (the leader id of the job
  * manager responsible for the job). The leader id will be exposed as a future via the {@link
  * #getLeaderId(JobID)}. The future will only be completed with an exception in case the service

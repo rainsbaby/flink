@@ -137,6 +137,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     /** {@code true} if all source tasks are stoppable. */
     private boolean isStoppable = true;
 
+    // 组成DAG
     /** All job vertices that are part of this graph. */
     private final Map<JobVertexID, ExecutionJobVertex> tasks;
 
@@ -146,6 +147,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     /** All intermediate results that are part of this graph. */
     private final Map<IntermediateDataSetID, IntermediateResult> intermediateResults;
 
+    // 执行记录
     /** The currently executed tasks, for callbacks. */
     private final Map<ExecutionAttemptID, Execution> currentExecutions;
 

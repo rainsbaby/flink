@@ -322,7 +322,7 @@ public class JobMasterServiceLeadershipRunner implements JobManagerRunner, Leade
                     e);
         }
 
-        jobMasterServiceProcess = jobMasterServiceProcessFactory.create(leaderSessionId);
+        jobMasterServiceProcess = jobMasterServiceProcessFactory.create(leaderSessionId); // 启动job
 
         forwardIfValidLeader(
                 leaderSessionId,

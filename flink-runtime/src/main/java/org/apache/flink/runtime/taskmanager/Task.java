@@ -122,6 +122,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * TaskManager中一个subtask的一个并行度的执行，包括operator执行、输入、输出、与JobManager的交互。
+ * 每个Task由一个固定的线程执行。
+ * Task不负责与其他task的交互，也不知道是否是第一次执行/重复执行，这些信息由JobManager维护。
+ *
  * The Task represents one execution of a parallel subtask on a TaskManager. A Task wraps a Flink
  * operator (which may be a user function) and runs it, providing all services necessary for example
  * to consume input data, produce its results (intermediate result partitions) and communicate with
@@ -198,6 +202,7 @@ public class Task
     /** The I/O manager to be used by this task. */
     private final IOManager ioManager;
 
+    // todo by guixian: ???
     /** The BroadcastVariableManager to be used by this task. */
     private final BroadcastVariableManager broadcastVariableManager;
 
@@ -216,11 +221,13 @@ public class Task
 
     private final ResultPartitionWriter[] consumableNotifyingPartitionWriters;
 
+    // todo by guixian: ???
     private final IndexedInputGate[] inputGates;
 
     /** Connection to the task manager. */
     private final TaskManagerActions taskManagerActions;
 
+    // todo by guixian: ???
     /** Input split provider for the task. */
     private final InputSplitProvider inputSplitProvider;
 
@@ -568,6 +575,7 @@ public class Task
         executingThread.start();
     }
 
+    // todo by guixian: ??? 核心内容
     /** The core work method that bootstraps the task and executes its code. */
     @Override
     public void run() {
@@ -585,7 +593,7 @@ public class Task
         while (true) {
             ExecutionState current = this.executionState;
             if (current == ExecutionState.CREATED) {
-                if (transitionState(ExecutionState.CREATED, ExecutionState.DEPLOYING)) {
+                if (transitionState(ExecutionState.CREATED, ExecutionState.DEPLOYING)) { // DEPLOYING
                     // success, we can start our work
                     break;
                 }
@@ -628,7 +636,7 @@ public class Task
 
             // activate safety net for task thread
             LOG.debug("Creating FileSystem stream leak safety net for task {}", this);
-            FileSystemSafetyNet.initializeSafetyNetForThread();
+            FileSystemSafetyNet.initializeSafetyNetForThread(); // todo by guixian: ???
 
             // first of all, get a user-code classloader
             // this may involve downloading the job's JAR files and/or classes
@@ -753,7 +761,7 @@ public class Task
 
             // switch to the INITIALIZING state, if that fails, we have been canceled/failed in the
             // meantime
-            if (!transitionState(ExecutionState.DEPLOYING, ExecutionState.INITIALIZING)) {
+            if (!transitionState(ExecutionState.DEPLOYING, ExecutionState.INITIALIZING)) { // INITIALIZING
                 throw new CancelTaskException();
             }
 
@@ -784,7 +792,7 @@ public class Task
 
             // try to mark the task as finished
             // if that fails, the task was canceled/failed in the meantime
-            if (!transitionState(ExecutionState.RUNNING, ExecutionState.FINISHED)) {
+            if (!transitionState(ExecutionState.RUNNING, ExecutionState.FINISHED)) { // FINISHED
                 throw new CancelTaskException();
             }
         } catch (Throwable t) {

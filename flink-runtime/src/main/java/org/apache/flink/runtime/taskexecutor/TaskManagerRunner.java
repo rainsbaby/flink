@@ -92,6 +92,9 @@ import java.util.concurrent.TimeUnit;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * yarn/standalone模式下，TaskManager的执行入口。
+ * 构建并启动TM相关组件，包括网络、I/O、内存、RPC、HA service等。
+ *
  * This class is the executable entry point for the task manager in yarn or standalone mode. It
  * constructs the related components (network, I/O manager, memory manager, RPC service, HA service)
  * and starts them.

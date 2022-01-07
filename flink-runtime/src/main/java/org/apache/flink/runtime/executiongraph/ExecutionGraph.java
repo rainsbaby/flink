@@ -52,6 +52,13 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * ExecutionGraph用于控制data flow的分布式执行，粒度细到每个并行的task、每个中间流及其交互。
+ * 由以下元素构成：
+ * 1. ExecutionJobVertex，表示JobGraph里的一个vertex。它聚合里该vertex对应的所有并行执行的执行状态。由JobVertexID标识。
+ * 2. ExecutionVertex，表示vertex的某个具体的并行subtask。用ExecutionJobVertex+subtask的index标识。
+ * 3. Execution，表示ExecutionVertex的一次执行。ExecutionVertex失败后重试、重复执行时，对应不同的Execution。
+ * 用ExecutionAttemptID标识。JobManager与TaskManager间，关于task部署及更新的交互，都基于ExecutionAttemptID。
+ *
  * The execution graph is the central data structure that coordinates the distributed execution of a
  * data flow. It keeps representations of each parallel task, each intermediate stream, and the
  * communication between them.
