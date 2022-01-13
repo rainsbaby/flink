@@ -73,6 +73,7 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
  */
 public class DefaultExecutionGraphBuilder {
 
+    // 构建ExecutionGraph
     public static DefaultExecutionGraph buildGraph(
             JobGraph jobGraph,
             Configuration jobManagerConfig,
@@ -230,6 +231,7 @@ public class DefaultExecutionGraphBuilder {
                 }
             }
 
+            // todo by guixian: ???
             final StateBackend rootBackend;
             try {
                 rootBackend =
@@ -312,6 +314,7 @@ public class DefaultExecutionGraphBuilder {
             final CheckpointCoordinatorConfiguration chkConfig =
                     snapshotSettings.getCheckpointCoordinatorConfiguration();
 
+            // 开启checkpoint
             executionGraph.enableCheckpointing(
                     chkConfig,
                     hooks,

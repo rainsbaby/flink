@@ -207,6 +207,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
 
     // ------------------------------------------------------------------------
 
+    // JobMaster创建，核心内容 todo by guixian: ???
     public JobMaster(
             RpcService rpcService,
             JobMasterId jobMasterId,
@@ -519,6 +520,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         return CompletableFuture.completedFuture(Acknowledge.get());
     }
 
+    // checkpoint响应
     // TODO: This method needs a leader session ID
     @Override
     public void acknowledgeCheckpoint(
@@ -1069,6 +1071,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         resourceManagerConnection.start();
     }
 
+    // 与ResourceManager建立连接，请求资源
     private void establishResourceManagerConnection(final JobMasterRegistrationSuccess success) {
         final ResourceManagerId resourceManagerId = success.getResourceManagerId();
 

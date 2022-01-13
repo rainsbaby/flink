@@ -144,6 +144,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     /** All vertices, in the order in which they were created. * */
     private final List<ExecutionJobVertex> verticesInCreationOrder;
 
+    // 中间结果
     /** All intermediate results that are part of this graph. */
     private final Map<IntermediateDataSetID, IntermediateResult> intermediateResults;
 
@@ -184,7 +185,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
 
     private PartitionGroupReleaseStrategy partitionGroupReleaseStrategy;
 
-    private DefaultExecutionTopology executionTopology;
+    private DefaultExecutionTopology executionTopology; //todo by guixian: ???
 
     @Nullable private InternalFailuresListener internalTaskFailuresListener;
 
@@ -237,6 +238,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     // ------ Fields that are relevant to the execution and need to be cleared before archiving
     // -------
 
+    // 调度checkpoint，并接收TaskManager的响应
     /** The coordinator for checkpoints, if snapshot checkpoints are enabled. */
     @Nullable private CheckpointCoordinator checkpointCoordinator;
 
@@ -262,6 +264,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     private final ExecutionDeploymentListener executionDeploymentListener;
     private final ExecutionStateUpdateListener executionStateUpdateListener;
 
+    //todo by guixian: ???
     private final EdgeManager edgeManager;
 
     private final Map<ExecutionVertexID, ExecutionVertex> executionVerticesById;
@@ -464,6 +467,8 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
 
         checkpointCoordinator.setCheckpointStatsTracker(checkpointStatsTracker);
 
+        // 配置了checkpoint周期后，添加CheckpointCoordinatorDeActivator作为JobStatusListener，
+        // 当job启动成功后开始checkpoint流程
         if (checkpointCoordinator.isPeriodicCheckpointingConfigured()) {
             // the periodic checkpoint scheduler is activated and deactivated as a result of
             // job status changes (running -> on, all other states -> off)

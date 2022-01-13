@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * 可读写的mailbox。
+ *
  * A task mailbox provides read and write access to a mailbox and has a lifecycle of open ->
  * (quiesced) -> closed. Mails have a priority that can be used to retrieve only relevant letters.
  *

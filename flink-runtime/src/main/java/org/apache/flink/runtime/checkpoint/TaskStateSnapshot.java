@@ -38,6 +38,8 @@ import java.util.function.Function;
 import static org.apache.flink.runtime.checkpoint.InflightDataRescalingDescriptor.NO_RESCALE;
 
 /**
+ * 一个Task内部所有operator的snapshot.
+ *
  * This class encapsulates state handles to the snapshots of all operator instances executed within
  * one task. A task can run multiple operator instances as a result of operator chaining, and all
  * operator instances from the chain can register their state under their operator id. Each operator

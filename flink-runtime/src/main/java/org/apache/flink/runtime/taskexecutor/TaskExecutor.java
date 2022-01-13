@@ -935,6 +935,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
     // Checkpointing RPCs
     // ----------------------------------------------------------------------
 
+    // 触发executionAttemptID对应task的checkpoint
     @Override
     public CompletableFuture<Acknowledge> triggerCheckpoint(
             ExecutionAttemptID executionAttemptID,
@@ -957,6 +958,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
         final Task task = taskSlotTable.getTask(executionAttemptID);
 
         if (task != null) {
+            // Barrier
             task.triggerCheckpointBarrier(checkpointId, checkpointTimestamp, checkpointOptions);
 
             return CompletableFuture.completedFuture(Acknowledge.get());

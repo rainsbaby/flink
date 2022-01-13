@@ -239,6 +239,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         return channelStateWriter;
     }
 
+    // todo by guixian: ??? checkpoint核心
     @Override
     public void checkpointState(
             CheckpointMetaData metadata,
@@ -294,6 +295,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         //           The pre-barrier work should be nothing or minimal in the common case.
         operatorChain.prepareSnapshotPreBarrier(metadata.getCheckpointId());
 
+        // 发送checkpoint barrier到下游 todo by guixian: ???
         // Step (2): Send the checkpoint barrier downstream
         operatorChain.broadcastEvent(
                 new CheckpointBarrier(metadata.getCheckpointId(), metadata.getTimestamp(), options),
@@ -305,6 +307,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
             channelStateWriter.finishOutput(metadata.getCheckpointId());
         }
 
+        // 创建snapshot。应当异步进行，以免影响streaming topology todo by guixian: ???
         // Step (4): Take the state snapshot. This should be largely asynchronous, to not impact
         // progress of the
         // streaming topology

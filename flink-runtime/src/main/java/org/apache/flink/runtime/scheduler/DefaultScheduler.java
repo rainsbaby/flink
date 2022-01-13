@@ -381,7 +381,7 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
                         deploymentOptionsByVertex,
                         slotExecutionVertexAssignments);
 
-        waitForAllSlotsAndDeploy(deploymentHandles); // slots准备完成后开始deploy
+        waitForAllSlotsAndDeploy(deploymentHandles); // slots准备完成后，开始deploy所有ExecutionVertex
     }
 
     private void validateDeploymentOptions(

@@ -103,6 +103,7 @@ public class DefaultExecutionGraphFactory implements ExecutionGraphFactory {
                     }
                 };
 
+        // build ExecutionGraph，包括checkpoint相关
         final ExecutionGraph newExecutionGraph =
                 DefaultExecutionGraphBuilder.buildGraph(
                         jobGraph,

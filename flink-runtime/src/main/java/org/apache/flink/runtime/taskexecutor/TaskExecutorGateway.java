@@ -123,6 +123,8 @@ public interface TaskExecutorGateway
             Collection<IntermediateDataSetID> dataSetsToRelease, @RpcTimeout Time timeout);
 
     /**
+     * 触发checkpoint
+     * todo by guixian: ??? 如何触发
      * Trigger the checkpoint for the given task. The checkpoint is identified by the checkpoint ID
      * and the checkpoint timestamp.
      *

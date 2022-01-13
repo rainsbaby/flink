@@ -75,6 +75,7 @@ public interface ResourceManagerGateway
             @RpcTimeout Time timeout);
 
     /**
+     * JobMaster为其负责的job申请资源
      * Declares the absolute resource requirements for a job.
      *
      * @param jobMasterId id of the JobMaster
@@ -112,6 +113,7 @@ public interface ResourceManagerGateway
             @RpcTimeout Time timeout);
 
     /**
+     * TaskExecutor通知释放某个slot
      * Sent by the TaskExecutor to notify the ResourceManager that a slot has become available.
      *
      * @param instanceId TaskExecutor's instance id

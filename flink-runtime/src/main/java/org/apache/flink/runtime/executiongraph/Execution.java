@@ -868,6 +868,7 @@ public class Execution
         if (slot != null) {
             final TaskManagerGateway taskManagerGateway = slot.getTaskManagerGateway();
 
+            // 通知TaskManager触发checkpoint
             return taskManagerGateway.triggerCheckpoint(
                     attemptId, getVertex().getJobId(), checkpointId, timestamp, checkpointOptions);
         }

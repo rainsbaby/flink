@@ -26,6 +26,7 @@ import org.apache.flink.runtime.rpc.RpcGateway;
 /** RPC Gateway interface for messages to the CheckpointCoordinator. */
 public interface CheckpointCoordinatorGateway extends RpcGateway {
 
+    // 来自TaskManager的Checkpoint响应
     void acknowledgeCheckpoint(
             final JobID jobID,
             final ExecutionAttemptID executionAttemptID,

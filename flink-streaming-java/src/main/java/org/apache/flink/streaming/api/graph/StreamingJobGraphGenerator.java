@@ -382,6 +382,7 @@ public class StreamingJobGraphGenerator {
         }
     }
 
+    // OperatorChain
     private List<StreamEdge> createChain(
             final Integer currentNodeId,
             final int chainIndex,
@@ -400,7 +401,7 @@ public class StreamingJobGraphGenerator {
 
             for (StreamEdge outEdge : currentNode.getOutEdges()) {
                 if (isChainable(outEdge, streamGraph)) {
-                    chainableOutputs.add(outEdge);
+                    chainableOutputs.add(outEdge); // OperatorChain
                 } else {
                     nonChainableOutputs.add(outEdge);
                 }

@@ -137,6 +137,11 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
+ * 每个Task执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。
+ * Operator chain在一个线程中同步执行，因此有同样的stream paritition。
+ * Operator chain中有一个head operator和多个chained operator。
+ * 有one-input和two-input 类型的head operator。
+ *
  * Base class for all streaming tasks. A task is the unit of local processing that is deployed and
  * executed by the TaskManagers. Each task runs one or more {@link StreamOperator}s which form the
  * Task's operator chain. Operators that are chained together execute synchronously in the same
@@ -217,6 +222,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
     /** The configuration of this streaming task. */
     protected final StreamConfig configuration;
 
+    // todo by guixian: ???
     /** Our state backend. We use this to create a keyed state backend. */
     protected final StateBackend stateBackend;
 
@@ -268,6 +274,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
 
     private final RecordWriterDelegate<SerializationDelegate<StreamRecord<OUT>>> recordWriter;
 
+    // todo by guixian: ???
     protected final MailboxProcessor mailboxProcessor;
 
     final MailboxExecutor mainMailboxExecutor;
@@ -485,6 +492,8 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
     protected void cancelTask() throws Exception {}
 
     /**
+     * todo by guixian: ???
+     *
      * This method implements the default action of the task (e.g. processing one event from the
      * input). Implementations should (in general) be non-blocking.
      *
@@ -757,6 +766,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
 
         scheduleBufferDebloater();
 
+        // todo by guixian: Operator主要逻辑执行
         // let the task do its work
         runMailboxLoop();
 
@@ -1138,6 +1148,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
         return result;
     }
 
+    // todo by guixian: ??? Mailbox
     private boolean triggerCheckpointAsyncInMailbox(
             CheckpointMetaData checkpointMetaData, CheckpointOptions checkpointOptions)
             throws Exception {

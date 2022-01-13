@@ -211,6 +211,7 @@ public class Task
     /** Information provider for external resources. */
     private final ExternalResourceInfoProvider externalResourceInfoProvider;
 
+    // 管理task/slot中operator状态，用于checkpoint/savepoint。
     /** The manager for state of operators running in this task/slot. */
     private final TaskStateManager taskStateManager;
 
@@ -771,7 +772,7 @@ public class Task
             // make sure the user code classloader is accessible thread-locally
             executingThread.setContextClassLoader(userCodeClassLoader.asClassLoader());
 
-            restoreAndInvoke(invokable);
+            restoreAndInvoke(invokable); // 触发执行Operator运行逻辑
 
             // make sure, we enter the catch block if the task leaves the invoke() method due
             // to the fact that it has been canceled
@@ -942,7 +943,8 @@ public class Task
             taskManagerActions.updateTaskExecutionState(
                     new TaskExecutionState(executionId, ExecutionState.RUNNING));
 
-            runWithSystemExitMonitoring(finalInvokable::invoke); // todo by guixian: run 的是什么？
+            // 执行TaskInvokable.invoke，表示Operator的主要逻辑。实现类有OneInputStreamTask/TwoInputStreamTask等
+            runWithSystemExitMonitoring(finalInvokable::invoke);
         } catch (Throwable throwable) {
             try {
                 runWithSystemExitMonitoring(() -> finalInvokable.cleanUp(throwable));
@@ -1313,6 +1315,7 @@ public class Task
     // ------------------------------------------------------------------------
 
     /**
+     * 触发checkpoint barrier
      * Calls the invokable to trigger a checkpoint.
      *
      * @param checkpointID The ID identifying the checkpoint.
@@ -1332,6 +1335,7 @@ public class Task
         if (executionState == ExecutionState.RUNNING) {
             checkState(invokable instanceof CheckpointableTask, "invokable is not checkpointable");
             try {
+                // todo by guixian: ??? checkpoint具体步骤
                 ((CheckpointableTask) invokable)
                         .triggerCheckpointAsync(checkpointMetaData, checkpointOptions)
                         .handle(

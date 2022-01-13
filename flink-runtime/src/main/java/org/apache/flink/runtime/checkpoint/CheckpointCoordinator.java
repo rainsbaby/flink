@@ -90,6 +90,11 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 发送消息到相应task来触发checkpoint的创建，接收task的回应。
+ * 同时收集并管理state信息。
+ *
+ * todo by guixian: ??? 如何触发，如何存储，如何恢复，如何周期性执行
+ *
  * The checkpoint coordinator coordinates the distributed snapshots of operators and state. It
  * triggers the checkpoint by sending the messages to the relevant tasks and collects the checkpoint
  * acknowledgements. It also collects and maintains the overview of the state handles reported by
@@ -132,6 +137,8 @@ public class CheckpointCoordinator {
     private final CompletedCheckpointStore completedCheckpointStore;
 
     /**
+     * checkpoint存储
+     *
      * The root checkpoint state backend, which is responsible for initializing the checkpoint,
      * storing the metadata, and cleaning up the checkpoint.
      */
@@ -141,6 +148,10 @@ public class CheckpointCoordinator {
     private final ArrayDeque<Long> recentPendingCheckpoints;
 
     /**
+     * 创建递增的checkpoint id。
+     * 保证在有job manager宕机master变化的情况下，checkpoint id都是递增的。
+     * 有zookeeper/kubernetes等实现
+     *
      * Checkpoint ID counter to ensure ascending IDs. In case of job manager failures, these need to
      * be ascending across job managers.
      */
@@ -162,6 +173,9 @@ public class CheckpointCoordinator {
     private final long minPauseBetweenCheckpoints;
 
     /**
+     * 处理checkpoint超时及触发周期性的checkpoint。
+     * 必须是单线程。
+     *
      * The timer that handles the checkpoint timeouts and triggers periodic checkpoints. It must be
      * single-threaded. Eventually it will be replaced by main thread executor.
      */
@@ -337,6 +351,8 @@ public class CheckpointCoordinator {
             throw new RuntimeException(
                     "Failed to start checkpoint ID counter: " + t.getMessage(), t);
         }
+
+        // 执行管理，比如周期执行里的延迟执行
         this.requestDecider =
                 new CheckpointRequestDecider(
                         chkConfig.getMaxConcurrentCheckpoints(),
@@ -490,6 +506,8 @@ public class CheckpointCoordinator {
     }
 
     /**
+     *
+     *
      * Triggers a new standard checkpoint and uses the given timestamp as the checkpoint timestamp.
      * The return value is a future. It completes when the checkpoint triggered finishes or an error
      * occurred.
@@ -541,6 +559,7 @@ public class CheckpointCoordinator {
                             .thenApplyAsync(
                                     plan -> {
                                         try {
+                                            // 初始化checkpoint存储地址，包括目录创建等
                                             CheckpointIdAndStorageLocation
                                                     checkpointIdAndStorageLocation =
                                                             initializeCheckpoint(
@@ -555,6 +574,7 @@ public class CheckpointCoordinator {
                                     executor)
                             .thenApplyAsync(
                                     (checkpointInfo) ->
+                                            // 创建PendingCheckpoint
                                             createPendingCheckpoint(
                                                     timestamp,
                                                     request.props,
@@ -568,6 +588,7 @@ public class CheckpointCoordinator {
             final CompletableFuture<?> coordinatorCheckpointsComplete =
                     pendingCheckpointCompletableFuture.thenComposeAsync(
                             (pendingCheckpoint) ->
+                                    // 触发执行checkpoint
                                     OperatorCoordinatorCheckpoints
                                             .triggerAndAcknowledgeAllCoordinatorCheckpointsWithCompletion(
                                                     coordinatorsToCheckpoint,
@@ -614,6 +635,7 @@ public class CheckpointCoordinator {
                                                 onTriggerFailure(checkpoint, throwable);
                                             }
                                         } else {
+                                            // todo by guixian: ???
                                             triggerCheckpointRequest(
                                                     request, timestamp, checkpoint);
                                         }
@@ -699,6 +721,7 @@ public class CheckpointCoordinator {
                         unalignedCheckpointsEnabled,
                         alignedCheckpointTimeout);
 
+        // 发送消息到source对应到task，触发checkpoint
         // send messages to the tasks to trigger their checkpoints
         List<CompletableFuture<Acknowledge>> acks = new ArrayList<>();
         for (Execution execution : checkpoint.getCheckpointPlan().getTasksToTrigger()) {
@@ -797,6 +820,8 @@ public class CheckpointCoordinator {
     }
 
     /**
+     * todo by guixian: what master ???
+     *
      * Snapshot master hook states asynchronously.
      *
      * @param checkpoint the pending checkpoint
@@ -1738,7 +1763,7 @@ public class CheckpointCoordinator {
     // --------------------------------------------------------------------------------------------
     //  Periodic scheduling of checkpoints
     // --------------------------------------------------------------------------------------------
-
+    // 周期执行checkpoint
     public void startCheckpointScheduler() {
         synchronized (lock) {
             if (shutdown) {
@@ -1818,6 +1843,7 @@ public class CheckpointCoordinator {
         return ThreadLocalRandom.current().nextLong(minPauseBetweenCheckpoints, baseInterval + 1L);
     }
 
+    // checkpoint的周期执行：延迟initDelay ms后执行
     private ScheduledFuture<?> scheduleTriggerWithDelay(long initDelay) {
         return timer.scheduleAtFixedRate(
                 new ScheduledTrigger(), initDelay, baseInterval, TimeUnit.MILLISECONDS);

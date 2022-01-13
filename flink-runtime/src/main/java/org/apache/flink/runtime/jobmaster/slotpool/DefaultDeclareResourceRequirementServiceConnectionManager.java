@@ -77,6 +77,7 @@ class DefaultDeclareResourceRequirementServiceConnectionManager
         }
     }
 
+    // 发送资源申请
     @GuardedBy("lock")
     private void triggerResourceRequirementsSubmission(
             Duration sleepOnError,

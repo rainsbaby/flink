@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
  */
 @Internal
 public class Mail {
+    // todo by guixian: ??? 具体执行什么逻辑
     /** The action to execute. */
     private final ThrowingRunnable<? extends Exception> runnable;
     /**

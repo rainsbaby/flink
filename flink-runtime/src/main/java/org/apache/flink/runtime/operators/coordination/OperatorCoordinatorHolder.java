@@ -275,7 +275,7 @@ public class OperatorCoordinatorHolder
 
     private void checkpointCoordinatorInternal(
             final long checkpointId, final CompletableFuture<byte[]> result) {
-        mainThreadExecutor.assertRunningInMainThread();
+        mainThreadExecutor.assertRunningInMainThread(); // todo by guixian: ???
 
         final CompletableFuture<byte[]> coordinatorCheckpoint = new CompletableFuture<>();
 
