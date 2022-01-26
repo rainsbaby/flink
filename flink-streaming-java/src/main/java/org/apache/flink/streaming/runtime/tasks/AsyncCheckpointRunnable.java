@@ -45,6 +45,8 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 执行subtask的backend snapshot的异步部分。
+ *
  * This runnable executes the asynchronous parts of all involved backend snapshots for the subtask.
  */
 final class AsyncCheckpointRunnable implements Runnable, Closeable {
@@ -102,6 +104,7 @@ final class AsyncCheckpointRunnable implements Runnable, Closeable {
         this.isTaskRunning = isTaskRunning;
     }
 
+    // todo by guixian: ???
     @Override
     public void run() {
         final long asyncStartNanos = System.nanoTime();
@@ -130,6 +133,7 @@ final class AsyncCheckpointRunnable implements Runnable, Closeable {
                     snapshotsFinalizeResult.bytesPersistedDuringAlignment);
             checkpointMetrics.setAsyncDurationMillis(asyncDurationMillis);
 
+            // 当前task的checkpoint执行完成
             if (asyncCheckpointState.compareAndSet(
                     AsyncCheckpointState.RUNNING, AsyncCheckpointState.COMPLETED)) {
 
@@ -173,6 +177,7 @@ final class AsyncCheckpointRunnable implements Runnable, Closeable {
             OperatorID operatorID = entry.getKey();
             OperatorSnapshotFutures snapshotInProgress = entry.getValue();
 
+            // 触发执行run方法，并获取结果
             // finalize the async part of all by executing all snapshot runnables
             OperatorSnapshotFinalizer finalizedSnapshots =
                     new OperatorSnapshotFinalizer(snapshotInProgress);
@@ -201,6 +206,7 @@ final class AsyncCheckpointRunnable implements Runnable, Closeable {
                 bytesPersistedDuringAlignment);
     }
 
+    // 通知JobMaster端snapshot完成
     private void reportCompletedSnapshotStates(
             TaskStateSnapshot acknowledgedTaskStateSnapshot,
             TaskStateSnapshot localTaskStateSnapshot,

@@ -30,6 +30,12 @@ import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * 运行时operator的管理者。
+ * OperatorCoordinator运行在master上，与operator的job vertex进行关联。
+ * 通过发送operator event与operator进行交互。
+ *
+ * source/sink/。。operator的coordinator，发现并分配工作，或进行聚合、提交metadata。
+ *
  * A coordinator for runtime operators. The OperatorCoordinator runs on the master, associated with
  * the job vertex of the operator. It communicates with operators via sending operator events.
  *
@@ -112,6 +118,8 @@ public interface OperatorCoordinator extends CheckpointListener, AutoCloseable {
     // ------------------------------------------------------------------------
 
     /**
+     * 对coordinator进行checkpoint。
+     *
      * Takes a checkpoint of the coordinator. The checkpoint is identified by the given ID.
      *
      * <p>To confirm the checkpoint and store state in it, the given {@code CompletableFuture} must
@@ -259,6 +267,8 @@ public interface OperatorCoordinator extends CheckpointListener, AutoCloseable {
     // ------------------------------------------------------------------------
 
     /**
+     * 用于与Operator的某个并发执行实例(Operator subtask)进行交互，例如发送消息到operator端
+     *
      * The {@code SubtaskGateway} is the way to interact with a specific parallel instance of the
      * Operator (an Operator subtask), like sending events to the operator.
      */

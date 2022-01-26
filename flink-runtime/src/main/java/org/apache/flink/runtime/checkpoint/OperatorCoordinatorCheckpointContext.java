@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * 用于CheckpointCoordinator 与 OperatorCoordinator在checkpoint/checkpoint恢复时的交互。
  * This context is the interface through which the {@link CheckpointCoordinator} interacts with an
  * {@link OperatorCoordinator} during checkpointing and checkpoint restoring.
  */

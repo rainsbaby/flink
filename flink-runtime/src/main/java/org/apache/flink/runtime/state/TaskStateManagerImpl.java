@@ -128,6 +128,7 @@ public class TaskStateManagerImpl implements TaskStateManager {
 
         localStateStore.storeLocalState(checkpointId, localState);
 
+        //上报checkpoint状态
         checkpointResponder.acknowledgeCheckpoint(
                 jobId, executionAttemptID, checkpointId, checkpointMetrics, acknowledgedState);
     }

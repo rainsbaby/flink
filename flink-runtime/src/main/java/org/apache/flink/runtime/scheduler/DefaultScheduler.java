@@ -247,11 +247,14 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
         log.info("Trying to recover from a global failure.", error);
         final FailureHandlingResult failureHandlingResult =
                 executionFailureHandler.getGlobalFailureHandlingResult(error, timestamp);
+        // 判断是否进行重启
         maybeRestartTasks(failureHandlingResult);
     }
 
     private void maybeRestartTasks(final FailureHandlingResult failureHandlingResult) {
+        // 根据失败详情判断是否可以重启
         if (failureHandlingResult.canRestart()) {
+            // 从最近的checkpoint开始重启恢复，不一定重启所有operator
             restartTasksWithDelay(failureHandlingResult);
         } else {
             failJob(failureHandlingResult.getError(), failureHandlingResult.getTimestamp());

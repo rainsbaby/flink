@@ -211,6 +211,7 @@ public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling
         this.executionGraphHandler =
                 new ExecutionGraphHandler(executionGraph, log, ioExecutor, this.mainThreadExecutor);
 
+        // todo by guixian: ???
         this.operatorCoordinatorHandler =
                 new DefaultOperatorCoordinatorHandler(executionGraph, this::handleGlobalFailure);
         operatorCoordinatorHandler.initializeOperatorCoordinators(this.mainThreadExecutor);
@@ -392,12 +393,14 @@ public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling
             final Set<ExecutionJobVertex> jobVerticesToRestore =
                     getInvolvedExecutionJobVertices(vertices);
 
+            // 全局失败时，恢复所有task
             checkpointCoordinator.restoreLatestCheckpointedStateToAll(jobVerticesToRestore, true);
 
         } else {
             final Map<ExecutionJobVertex, IntArrayList> subtasksToRestore =
                     getInvolvedExecutionJobVerticesAndSubtasks(vertices);
 
+            // 恢复部分task
             final OptionalLong restoredCheckpointId =
                     checkpointCoordinator.restoreLatestCheckpointedStateToSubtasks(
                             subtasksToRestore.keySet());

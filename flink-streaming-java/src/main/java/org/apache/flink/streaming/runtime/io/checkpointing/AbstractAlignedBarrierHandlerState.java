@@ -58,7 +58,9 @@ abstract class AbstractAlignedBarrierHandlerState implements BarrierHandlerState
             throws IOException, CheckpointException {
         checkState(!checkpointBarrier.getCheckpointOptions().isUnalignedCheckpoint());
 
+        // todo by guixian: ???
         if (markChannelBlocked) {
+            // block channel消费
             state.blockChannel(channelInfo);
         }
 

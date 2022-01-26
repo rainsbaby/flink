@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * 支持isFinished/pollNext/getAvailableFuture异步方法，用于非阻塞的数据拉取。
+ *
  * Interface defining couple of essential methods for asynchronous and non blocking data polling.
  *
  * <p>For the most efficient usage, user of this class is supposed to call {@link #pollNext()} until

@@ -137,7 +137,7 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
- * 每个Task执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。
+ * 每个StreamTask执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。
  * Operator chain在一个线程中同步执行，因此有同样的stream paritition。
  * Operator chain中有一个head operator和多个chained operator。
  * 有one-input和two-input 类型的head operator。
@@ -1115,6 +1115,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
     //  Checkpoint and Restore
     // ------------------------------------------------------------------------
 
+    // 异步执行checkpoint
     @Override
     public CompletableFuture<Boolean> triggerCheckpointAsync(
             CheckpointMetaData checkpointMetaData, CheckpointOptions checkpointOptions) {
@@ -1128,6 +1129,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
                                         .allMatch(InputGate::isFinished);
 
                         if (noUnfinishedInputGates) {
+                            // input的所有partition都已经处理完成 todo by guixian: ???
                             result.complete(
                                     triggerCheckpointAsyncInMailbox(
                                             checkpointMetaData, checkpointOptions));
@@ -1170,6 +1172,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
             subtaskCheckpointCoordinator.initInputsCheckpoint(
                     checkpointMetaData.getCheckpointId(), checkpointOptions);
 
+            // 执行checkpoint
             boolean success =
                     performCheckpoint(checkpointMetaData, checkpointOptions, checkpointMetrics);
             if (!success) {
@@ -1217,6 +1220,9 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
         for (IndexedInputGate inputGate : getEnvironment().getAllInputGates()) {
             if (!inputGate.isFinished()) {
                 for (InputChannelInfo channelInfo : inputGate.getUnfinishedChannels()) {
+                    // 根据配置的不同，选择不同的handler
+                    //exactly-once: SingleCheckpointBarrierHandler
+                    //at-least-once: CheckpointBarrierTracker
                     checkpointBarrierHandler.get().processBarrier(barrier, channelInfo, true);
                 }
             }
@@ -1337,6 +1343,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
                             this.finalCheckpointMinId = checkpointMetaData.getCheckpointId();
                         }
 
+                        // 具体checkpoint执行逻辑
                         subtaskCheckpointCoordinator.checkpointState(
                                 checkpointMetaData,
                                 checkpointOptions,

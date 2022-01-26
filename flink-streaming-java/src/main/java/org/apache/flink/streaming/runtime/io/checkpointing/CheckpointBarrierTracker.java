@@ -45,6 +45,13 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 记录每个channel上接收到的checkpoint barrier。
+ * 一旦接收到一个checkpoint id对应的所有checkpoint barrier，就通知所有listener(toNotifyOnCheckpoint)。
+ *
+ * 不像SingleCheckpointBarrierHandler，CheckpointBarrierTracker不阻塞已发送barrier的input channel，
+ * 因此不能用于保证 exactly-once。
+ * 只能用于保证at least once。
+ *
  * The {@link CheckpointBarrierTracker} keeps track of what checkpoint barriers have been received
  * from which input channels. Once it has observed all checkpoint barriers for a checkpoint ID, it
  * notifies its listener of a completed checkpoint.
@@ -90,6 +97,7 @@ public class CheckpointBarrierTracker extends CheckpointBarrierHandler {
         this.pendingCheckpoints = new ArrayDeque<>();
     }
 
+    // 处理Barrier
     @Override
     public void processBarrier(
             CheckpointBarrier receivedBarrier, InputChannelInfo channelInfo, boolean isRpcTriggered)
@@ -136,6 +144,7 @@ public class CheckpointBarrierTracker extends CheckpointBarrierHandler {
                     pendingCheckpoints.pollFirst();
                 }
 
+                // 通知下游，下游是？ todo by guixian: ???
                 // notify the listener
                 if (!barrierCount.isAborted()) {
                     triggerCheckpointOnAligned(barrierCount);

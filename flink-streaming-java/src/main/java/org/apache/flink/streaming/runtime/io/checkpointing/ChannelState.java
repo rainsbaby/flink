@@ -51,6 +51,7 @@ final class ChannelState {
         this.inputs = inputs;
     }
 
+    // todo by guixian: ？？？如何block
     public void blockChannel(InputChannelInfo channelInfo) {
         inputs[channelInfo.getGateIdx()].blockConsumption(channelInfo);
         blockedChannels.add(channelInfo);

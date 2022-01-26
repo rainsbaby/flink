@@ -520,7 +520,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
         return CompletableFuture.completedFuture(Acknowledge.get());
     }
 
-    // checkpoint响应
+    // 接收checkpoint响应
     // TODO: This method needs a leader session ID
     @Override
     public void acknowledgeCheckpoint(

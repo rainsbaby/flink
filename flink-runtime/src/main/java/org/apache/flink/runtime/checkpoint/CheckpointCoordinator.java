@@ -90,6 +90,7 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 管理分布式operator的snapshot行为。
  * 发送消息到相应task来触发checkpoint的创建，接收task的回应。
  * 同时收集并管理state信息。
  *
@@ -131,6 +132,8 @@ public class CheckpointCoordinator {
     private final Map<Long, PendingCheckpoint> pendingCheckpoints;
 
     /**
+     * 已完成的checkpoint。
+     *
      * Completed checkpoints. Implementations can be blocking. Make sure calls to methods accessing
      * this don't block the job manager actor and run asynchronously.
      */
@@ -181,6 +184,7 @@ public class CheckpointCoordinator {
      */
     private final ScheduledExecutor timer;
 
+    // todo by guixian: ???
     /** The master checkpoint hooks executed by this checkpoint coordinator. */
     private final HashMap<String, MasterTriggerRestoreHook<?>> masterHooks;
 
@@ -368,6 +372,7 @@ public class CheckpointCoordinator {
     // --------------------------------------------------------------------------------------------
 
     /**
+     *
      * Adds the given master hook to the checkpoint coordinator. This method does nothing, if the
      * checkpoint coordinator already contained a hook with the same ID (as defined via {@link
      * MasterTriggerRestoreHook#getIdentifier()}).
@@ -588,7 +593,7 @@ public class CheckpointCoordinator {
             final CompletableFuture<?> coordinatorCheckpointsComplete =
                     pendingCheckpointCompletableFuture.thenComposeAsync(
                             (pendingCheckpoint) ->
-                                    // 触发执行checkpoint
+                                    // 触发执行coordinator的checkpoint
                                     OperatorCoordinatorCheckpoints
                                             .triggerAndAcknowledgeAllCoordinatorCheckpointsWithCompletion(
                                                     coordinatorsToCheckpoint,
@@ -635,7 +640,7 @@ public class CheckpointCoordinator {
                                                 onTriggerFailure(checkpoint, throwable);
                                             }
                                         } else {
-                                            // todo by guixian: ???
+                                            // 触发checkpoint todo by guixian: ???
                                             triggerCheckpointRequest(
                                                     request, timestamp, checkpoint);
                                         }
@@ -721,7 +726,7 @@ public class CheckpointCoordinator {
                         unalignedCheckpointsEnabled,
                         alignedCheckpointTimeout);
 
-        // 发送消息到source对应到task，触发checkpoint
+        // 发送消息到source对应的task，触发checkpoint
         // send messages to the tasks to trigger their checkpoints
         List<CompletableFuture<Acknowledge>> acks = new ArrayList<>();
         for (Execution execution : checkpoint.getCheckpointPlan().getTasksToTrigger()) {
@@ -1446,7 +1451,11 @@ public class CheckpointCoordinator {
                 false); // see explanation above
     }
 
+
     /**
+     * 从最近一个checkpoint恢复所有task和coordinator
+     * todo by guixian: ???
+     *
      * Restores the latest checkpointed state to all tasks and all coordinators. This method
      * represents a "global restore"-style operation where all stateful tasks and coordinators from
      * the given set of Job Vertices are restored. are restored to their latest checkpointed state.

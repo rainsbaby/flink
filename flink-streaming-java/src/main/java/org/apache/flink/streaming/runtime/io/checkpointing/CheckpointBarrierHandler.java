@@ -38,6 +38,8 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 处理接收到的checkpoint barrier。
+ *
  * The {@link CheckpointBarrierHandler} reacts to checkpoint barrier arriving from the input
  * channels. Different implementations may either simply track barriers, or block certain inputs on
  * barriers.
@@ -45,6 +47,7 @@ import static org.apache.flink.util.Preconditions.checkState;
 public abstract class CheckpointBarrierHandler implements Closeable {
     private static final long OUTSIDE_OF_ALIGNMENT = Long.MIN_VALUE;
 
+    // StreamTask
     /** The listener to be notified on complete checkpoints. */
     private final CheckpointableTask toNotifyOnCheckpoint;
 

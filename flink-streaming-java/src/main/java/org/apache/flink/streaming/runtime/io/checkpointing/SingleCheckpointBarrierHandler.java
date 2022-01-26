@@ -53,6 +53,10 @@ import static org.apache.flink.runtime.checkpoint.CheckpointFailureReason.CHECKP
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 当读取第一个barrier后，记录接收的barrier数目，并消费barrier触发checkpoint。
+ * 同一时刻只能追踪一个checkpoint。
+ * for exactly-once.
+ *
  * {@link SingleCheckpointBarrierHandler} is used for triggering checkpoint while reading the first
  * barrier and keeping track of the number of received barriers and consumed barriers. It can
  * handle/track just single checkpoint at a time. The behaviour when to actually trigger the
@@ -72,6 +76,8 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
     private final CheckpointableInput[] inputs;
 
     /**
+     * checkpoint id，保证从不同的channel读取到相同到barrier但是只会触发一个checkpoint
+     *
      * The checkpoint id to guarantee that we would trigger only one checkpoint when reading the
      * same barrier from different channels.
      */
@@ -122,6 +128,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
                 inputs);
     }
 
+    // 创建unaligned SingleCheckpointBarrierHandler，用于unaligned的exactly-once
     public static SingleCheckpointBarrierHandler unaligned(
             String taskName,
             CheckpointableTask toNotifyOnCheckpoint,
@@ -137,6 +144,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
                 checkpointCoordinator,
                 clock,
                 numOpenChannels,
+                // todo by guixian: ???
                 new AlternatingWaitingForFirstBarrierUnaligned(false, new ChannelState(inputs)),
                 false,
                 registerTimer,
@@ -144,6 +152,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
                 enableCheckpointAfterTasksFinished);
     }
 
+    // 创建aligned SingleCheckpointBarrierHandler，用于aligned的exactly-once
     public static SingleCheckpointBarrierHandler aligned(
             String taskName,
             CheckpointableTask toNotifyOnCheckpoint,
@@ -158,6 +167,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
                 null,
                 clock,
                 numOpenChannels,
+                // todo by guixian: ???
                 new WaitingForFirstBarrier(inputs),
                 false,
                 registerTimer,
@@ -228,6 +238,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
         checkNewCheckpoint(barrier);
         checkState(currentCheckpointId == barrierId);
 
+        //
         markCheckpointAlignedAndTransformState(
                 channelInfo,
                 barrier,

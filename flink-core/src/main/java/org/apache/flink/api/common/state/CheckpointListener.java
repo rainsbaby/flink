@@ -98,6 +98,8 @@ import org.apache.flink.annotation.Public;
 public interface CheckpointListener {
 
     /**
+     * 通知listener checkpoint已完成
+     *
      * Notifies the listener that the checkpoint with the given {@code checkpointId} completed and
      * was committed.
      *

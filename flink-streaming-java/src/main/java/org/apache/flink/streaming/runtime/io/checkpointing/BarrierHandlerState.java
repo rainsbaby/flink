@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 
 /**
+ * 处理checkpoint时的状态机中的某一个状态。
+ *
  * Represents a state in a state machine of processing a checkpoint. There are 4 base states:
  *
  * <ul>

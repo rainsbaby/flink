@@ -48,6 +48,8 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 一个task生成的数据的partition。
+ *
  * A result partition for data produced by a single task.
  *
  * <p>This class is the runtime part of a logical {@link IntermediateResultPartition}. Essentially,

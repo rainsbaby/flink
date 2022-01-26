@@ -232,6 +232,7 @@ public class Task
     /** Input split provider for the task. */
     private final InputSplitProvider inputSplitProvider;
 
+    // 与CheckpointCoordinator沟通
     /** Checkpoint notifier used to communicate with the CheckpointCoordinator. */
     private final CheckpointResponder checkpointResponder;
 

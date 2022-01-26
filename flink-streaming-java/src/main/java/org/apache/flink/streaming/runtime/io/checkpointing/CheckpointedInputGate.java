@@ -48,6 +48,8 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
+ * CheckpointedInputGate使用CheckpointBarrierHandler，处理从InputGate得到的CheckpointBarrier。
+ *
  * The {@link CheckpointedInputGate} uses {@link CheckpointBarrierHandler} to handle incoming {@link
  * CheckpointBarrier} from the {@link InputGate}.
  */
@@ -59,6 +61,7 @@ public class CheckpointedInputGate implements PullingAsyncDataInput<BufferOrEven
 
     private final UpstreamRecoveryTracker upstreamRecoveryTracker;
 
+    //buffer的上游数据
     /** The gate that the buffer draws its input from. */
     private final InputGate inputGate;
 
@@ -109,7 +112,7 @@ public class CheckpointedInputGate implements PullingAsyncDataInput<BufferOrEven
         boolean hasPriorityEvent = inputGate.getPriorityEventAvailableFuture().isDone();
         while (hasPriorityEvent) {
             // process as many priority events as possible
-            final Optional<BufferOrEvent> bufferOrEventOpt = pollNext();
+            final Optional<BufferOrEvent> bufferOrEventOpt = pollNext(); // 处理消息
             if (!bufferOrEventOpt.isPresent()) {
                 break;
             }
@@ -177,6 +180,7 @@ public class CheckpointedInputGate implements PullingAsyncDataInput<BufferOrEven
     private Optional<BufferOrEvent> handleEvent(BufferOrEvent bufferOrEvent) throws IOException {
         Class<? extends AbstractEvent> eventClass = bufferOrEvent.getEvent().getClass();
         if (eventClass == CheckpointBarrier.class) {
+            // 处理Barrier消息 todo by guixian: ???
             CheckpointBarrier checkpointBarrier = (CheckpointBarrier) bufferOrEvent.getEvent();
             barrierHandler.processBarrier(checkpointBarrier, bufferOrEvent.getChannelInfo(), false);
         } else if (eventClass == CancelCheckpointMarker.class) {

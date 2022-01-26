@@ -74,6 +74,7 @@ public interface SchedulerNG extends AutoCloseableAsync {
 
     CompletableFuture<JobStatus> getJobTerminationFuture();
 
+    // 处理operator节点failure/checkpoint失败等情况
     void handleGlobalFailure(Throwable cause);
 
     default boolean updateTaskExecutionState(TaskExecutionState taskExecutionState) {

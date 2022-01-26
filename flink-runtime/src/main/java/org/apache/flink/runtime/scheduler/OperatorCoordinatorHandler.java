@@ -29,7 +29,9 @@ import org.apache.flink.util.FlinkException;
 
 import java.util.concurrent.CompletableFuture;
 
-/** Handler for the {@link OperatorCoordinator OperatorCoordinators}. */
+/**
+ * 管理OperatorCoordinator。
+ * Handler for the {@link OperatorCoordinator OperatorCoordinators}. */
 public interface OperatorCoordinatorHandler {
 
     /**

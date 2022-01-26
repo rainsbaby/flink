@@ -44,6 +44,12 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * OperatorCoordinatorHolder持有OperatorCoordinator，管理它与其他组件的交互。
+ * 为checkpoint和exactly once语义提供上下文并进行保证。
+ *
+ * exactly-one语义，描述在OperatorCoordinator.checkpointCoordinator()中。
+ * exactly-one语义保证同一时刻只有一个checkpoint在执行。
+ *
  * The {@code OperatorCoordinatorHolder} holds the {@link OperatorCoordinator} and manages all its
  * interactions with the remaining components. It provides the context and is responsible for
  * checkpointing and exactly once semantics.
@@ -116,6 +122,7 @@ public class OperatorCoordinatorHolder
 
     private static final Logger LOG = LoggerFactory.getLogger(OperatorCoordinatorHolder.class);
 
+    // 与Operator进行交互
     private final OperatorCoordinator coordinator;
     private final OperatorID operatorId;
     private final LazyInitializedCoordinatorContext context;
@@ -304,6 +311,7 @@ public class OperatorCoordinatorHolder
         } catch (Throwable t) {
             ExceptionUtils.rethrowIfFatalErrorOrOOM(t);
             result.completeExceptionally(t);
+            // 失败处理
             globalFailureHandler.accept(t);
         }
     }

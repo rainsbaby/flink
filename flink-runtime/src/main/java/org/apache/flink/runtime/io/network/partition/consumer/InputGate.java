@@ -34,6 +34,13 @@ import java.util.stream.IntStream;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * InputGate消费一个intermediate result中的一个/多个partition。
+ * 每个intermediate result根据producing parallel subtasks分成n个分区；
+ * 每个分区又被进一步分成一个/多个子分区。
+ *
+ * 如下图，2个map subtasks生成了2个partition；
+ * 每个partition又被分成2个subpartition，用于后续的reduce subtask使用。
+ *
  * An input gate consumes one or more partitions of a single produced intermediate result.
  *
  * <p>Each intermediate result is partitioned over its producing parallel subtasks; each of these

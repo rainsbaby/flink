@@ -33,6 +33,8 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
 
 /**
+ * 管理OperatorCoordinator的checkpoint相关工作。
+ *
  * All the logic related to taking checkpoints of the {@link OperatorCoordinator}s.
  *
  * <p>NOTE: This class has a simplified error handling logic. If one of the several coordinator

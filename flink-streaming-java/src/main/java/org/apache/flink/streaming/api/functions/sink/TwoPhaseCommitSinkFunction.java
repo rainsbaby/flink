@@ -64,6 +64,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 用于在SinkFunction中实现exactly-once语义。
+ * 实现方式是，在CheckpointedFunction和CheckpointListener基础上实现两阶段提交算法。
+ * 用户需要提供TXN，在Sink端支持事务。
+ *
  * This is a recommended base class for all of the {@link SinkFunction} that intend to implement
  * exactly-once semantic. It does that by implementing two phase commit algorithm on top of the
  * {@link CheckpointedFunction} and {@link CheckpointListener}. User should provide custom {@code
@@ -92,6 +96,8 @@ public abstract class TwoPhaseCommitSinkFunction<IN, TXN, CONTEXT> extends RichS
     private final ListStateDescriptor<State<TXN, CONTEXT>> stateDescriptor;
 
     /**
+     * todo by guixian: ???
+     *
      * Current Transaction Holder, including two states: 1. Normal Transaction: created when a new
      * snapshot is taken during normal task running 2. null: After task/function is finished.
      */

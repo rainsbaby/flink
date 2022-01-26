@@ -239,7 +239,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         return channelStateWriter;
     }
 
-    // todo by guixian: ??? checkpoint核心
+    // checkpoint核心！！
     @Override
     public void checkpointState(
             CheckpointMetaData metadata,
@@ -295,7 +295,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         //           The pre-barrier work should be nothing or minimal in the common case.
         operatorChain.prepareSnapshotPreBarrier(metadata.getCheckpointId());
 
-        // 发送checkpoint barrier到下游 todo by guixian: ???
+        // 发送checkpoint barrier到下游
         // Step (2): Send the checkpoint barrier downstream
         operatorChain.broadcastEvent(
                 new CheckpointBarrier(metadata.getCheckpointId(), metadata.getTimestamp(), options),
@@ -307,7 +307,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
             channelStateWriter.finishOutput(metadata.getCheckpointId());
         }
 
-        // 创建snapshot。应当异步进行，以免影响streaming topology todo by guixian: ???
+        // 创建所有operator的snapshot。应当异步进行，以免影响streaming topology todo by guixian: ???
         // Step (4): Take the state snapshot. This should be largely asynchronous, to not impact
         // progress of the
         // streaming topology
@@ -315,8 +315,10 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         Map<OperatorID, OperatorSnapshotFutures> snapshotFutures =
                 new HashMap<>(operatorChain.getNumberOfOperators());
         try {
+            // 创建snapshot
             if (takeSnapshotSync(
                     snapshotFutures, metadata, metrics, options, operatorChain, isRunning)) {
+                // 异步处理snapshot结果
                 finishAndReportAsync(
                         snapshotFutures,
                         metadata,
@@ -528,6 +530,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
         }
     }
 
+    // snapshot完成后的动作
     private void prepareInflightDataSnapshot(long checkpointId) throws CheckpointException {
         prepareInputSnapshot
                 .apply(channelStateWriter, checkpointId)
@@ -605,6 +608,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
                         checkpointId, checkpointOptions.getTargetLocation());
 
         try {
+            // snapshot todo by guixian:???
             operatorChain.snapshotState(
                     operatorSnapshotsInProgress,
                     checkpointMetaData,

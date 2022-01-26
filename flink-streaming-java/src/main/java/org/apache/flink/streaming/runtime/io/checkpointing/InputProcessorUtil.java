@@ -81,6 +81,7 @@ public class InputProcessorUtil {
                 .toArray(CheckpointedInputGate[]::new);
     }
 
+    // 根据EXACTLY_ONCE/AT_LEAST_ONCE配置创建相应的CheckpointBarrierHandler
     public static CheckpointBarrierHandler createCheckpointBarrierHandler(
             CheckpointableTask toNotifyOnCheckpoint,
             StreamConfig config,
@@ -153,6 +154,7 @@ public class InputProcessorUtil {
         boolean enableCheckpointAfterTasksFinished =
                 config.getConfiguration()
                         .get(ExecutionCheckpointingOptions.ENABLE_CHECKPOINTS_AFTER_TASKS_FINISH);
+        // 是否开启UnalignedCheckpoints，1.11开始的新特性 todo by guixian: ???
         if (config.isUnalignedCheckpointsEnabled()) {
             return SingleCheckpointBarrierHandler.alternating(
                     taskName,
