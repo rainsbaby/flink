@@ -128,9 +128,9 @@ import java.util.function.Function;
 /**
  * 基于resource manager在资源不足的情况下，自动调整并行度。
  *
- * 只支持streaming语义，即所有节点通过数据交换进行连接。
+ * <p>只支持streaming语义，即所有节点通过数据交换进行连接。
  *
- * A {@link SchedulerNG} implementation that uses the declarative resource management and
+ * <p>A {@link SchedulerNG} implementation that uses the declarative resource management and
  * automatically adapts the parallelism in case not enough resource could be acquired to run at the
  * configured parallelism, as described in FLIP-160.
  *

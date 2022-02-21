@@ -34,12 +34,11 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
- * 获取并report task的状态。
- * 触发task的checkpoint/savepoint后，task会为其中所有operator创建snapshot。
+ * 获取并report task的状态。 触发task的checkpoint/savepoint后，task会为其中所有operator创建snapshot。
  * task中operator的snapshot通过TaskStateManager接口，上报给checkpoint coordinator或本地的state store。
  * 同时，可以通过这个接口访问保存的operator state，用于task恢复。
  *
- * This interface provides methods to report and retrieve state for a task.
+ * <p>This interface provides methods to report and retrieve state for a task.
  *
  * <p>When a checkpoint or savepoint is triggered on a task, it will create snapshots for all stream
  * operator instances it owns. All operator snapshots from the task are then reported via this

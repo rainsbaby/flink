@@ -50,6 +50,7 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * Pipeline的仅存在于内存的subpartition，只能被消费一次。
  * A pipelined in-memory only subpartition, which can be consumed once.
  *
  * <p>Whenever {@link ResultSubpartition#add(BufferConsumer)} adds a finished {@link BufferConsumer}

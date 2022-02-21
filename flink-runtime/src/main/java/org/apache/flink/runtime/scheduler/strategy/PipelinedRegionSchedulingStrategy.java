@@ -40,7 +40,9 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * {@link SchedulingStrategy} instance which schedules tasks in granularity of pipelined regions.
+ * 以pipelined regions的粒度调度task。
+ *
+ * <p>{@link SchedulingStrategy} instance which schedules tasks in granularity of pipelined regions.
  */
 public class PipelinedRegionSchedulingStrategy implements SchedulingStrategy {
 

@@ -189,6 +189,7 @@ public class LocalInputChannel extends InputChannel implements BufferAvailabilit
         }
     }
 
+    // 获取buffer用于消费？
     @Override
     Optional<BufferAndAvailability> getNextBuffer() throws IOException {
         checkError();

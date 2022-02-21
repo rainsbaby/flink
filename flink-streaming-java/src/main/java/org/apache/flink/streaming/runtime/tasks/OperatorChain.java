@@ -83,8 +83,8 @@ import static org.apache.flink.util.Preconditions.checkState;
 /**
  * 一个StreamTask中执行的一串operator。
  *
- * The {@code OperatorChain} contains all operators that are executed as one chain within a single
- * {@link StreamTask}.
+ * <p>The {@code OperatorChain} contains all operators that are executed as one chain within a
+ * single {@link StreamTask}.
  *
  * <p>The main entry point to the chain is it's {@code mainOperator}. {@code mainOperator} is
  * driving the execution of the {@link StreamTask}, by pulling the records from network inputs

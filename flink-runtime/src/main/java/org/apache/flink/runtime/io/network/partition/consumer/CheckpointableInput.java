@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * 只提供阻塞/恢复消费的input接口。
  *
- * Input, with just basic methods for blocking and resuming consumption. It can be for example an
+ * <p>Input, with just basic methods for blocking and resuming consumption. It can be for example an
  * {@link InputGate} or a chained source.
  */
 @Internal

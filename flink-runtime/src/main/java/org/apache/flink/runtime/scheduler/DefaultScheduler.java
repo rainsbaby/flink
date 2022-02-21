@@ -356,7 +356,7 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
     // ------------------------------------------------------------------------
     // SchedulerOperations
     // ------------------------------------------------------------------------
-
+    // 分配slot并部署
     @Override
     public void allocateSlotsAndDeploy(
             final List<ExecutionVertexDeploymentOption> executionVertexDeploymentOptions) {
@@ -373,7 +373,7 @@ public class DefaultScheduler extends SchedulerBase implements SchedulerOperatio
         final Map<ExecutionVertexID, ExecutionVertexVersion> requiredVersionByVertex =
                 executionVertexVersioner.recordVertexModifications(verticesToDeploy);
 
-        transitionToScheduled(verticesToDeploy); // todo by guixian: ???
+        transitionToScheduled(verticesToDeploy); // 每个Execution状态变为ExecutionState.SCHEDULED
 
         final List<SlotExecutionVertexAssignment> slotExecutionVertexAssignments =
                 allocateSlots(executionVertexDeploymentOptions); // 分配slot

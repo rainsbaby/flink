@@ -29,6 +29,7 @@ import java.util.Map;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 跟踪TaskManager当前生成/消费的所有partition
  * The result partition manager keeps track of all currently produced/consumed partitions of a task
  * manager.
  */

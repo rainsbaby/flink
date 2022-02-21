@@ -59,9 +59,11 @@ public class PhysicalSlotProviderImpl implements PhysicalSlotProvider {
                 slotRequestId,
                 resourceProfile);
 
+        // 从已有的slot中分配
         Optional<PhysicalSlot> availablePhysicalSlot =
                 tryAllocateFromAvailable(slotRequestId, slotProfile);
 
+        // 申请新的slot
         CompletableFuture<PhysicalSlot> slotFuture;
         slotFuture =
                 availablePhysicalSlot

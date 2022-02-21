@@ -126,8 +126,12 @@ import java.util.concurrent.ExecutionException;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * The StreamExecutionEnvironment is the context in which a streaming program is executed. A {@link
- * LocalStreamEnvironment} will cause execution in the current JVM, a {@link
+ * Streaming项目执行的上下文。
+ *
+ * <p>提供方法用于控制job执行（设置并行度/容错/checkpoint参数），与外部进行交互（数据读写）。
+ *
+ * <p>The StreamExecutionEnvironment is the context in which a streaming program is executed. A
+ * {@link LocalStreamEnvironment} will cause execution in the current JVM, a {@link
  * RemoteStreamEnvironment} will cause execution on a remote setup.
  *
  * <p>The environment provides methods to control the job execution (such as setting the parallelism

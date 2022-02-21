@@ -122,11 +122,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * TaskManager中一个subtask的一个并行度的执行，包括operator执行、输入、输出、与JobManager的交互。
- * 每个Task由一个固定的线程执行。
+ * TaskManager中一个subtask的一个并行度的执行，包括operator执行、输入、输出、与JobManager的交互。 每个Task由一个固定的线程执行。
  * Task不负责与其他task的交互，也不知道是否是第一次执行/重复执行，这些信息由JobManager维护。
  *
- * The Task represents one execution of a parallel subtask on a TaskManager. A Task wraps a Flink
+ * <p>The Task represents one execution of a parallel subtask on a TaskManager. A Task wraps a Flink
  * operator (which may be a user function) and runs it, providing all services necessary for example
  * to consume input data, produce its results (intermediate result partitions) and communicate with
  * the JobManager.
@@ -409,6 +408,7 @@ public class Task
                         taskNameWithSubtaskAndId, executionId, metrics.getIOMetricGroup());
 
         // produced intermediate result partitions
+        // 生成的intermediate result partitions
         final ResultPartitionWriter[] resultPartitionWriters =
                 shuffleEnvironment
                         .createResultPartitionWriters(
@@ -424,6 +424,7 @@ public class Task
                         resultPartitionConsumableNotifier);
 
         // consumed intermediate result partitions
+        // 消费的intermediate result partitions
         final IndexedInputGate[] gates =
                 shuffleEnvironment
                         .createInputGates(taskShuffleContext, this, inputGateDeploymentDescriptors)
@@ -595,7 +596,8 @@ public class Task
         while (true) {
             ExecutionState current = this.executionState;
             if (current == ExecutionState.CREATED) {
-                if (transitionState(ExecutionState.CREATED, ExecutionState.DEPLOYING)) { // DEPLOYING
+                if (transitionState(
+                        ExecutionState.CREATED, ExecutionState.DEPLOYING)) { // DEPLOYING
                     // success, we can start our work
                     break;
                 }
@@ -763,7 +765,8 @@ public class Task
 
             // switch to the INITIALIZING state, if that fails, we have been canceled/failed in the
             // meantime
-            if (!transitionState(ExecutionState.DEPLOYING, ExecutionState.INITIALIZING)) { // INITIALIZING
+            if (!transitionState(
+                    ExecutionState.DEPLOYING, ExecutionState.INITIALIZING)) { // INITIALIZING
                 throw new CancelTaskException();
             }
 
@@ -773,7 +776,8 @@ public class Task
             // make sure the user code classloader is accessible thread-locally
             executingThread.setContextClassLoader(userCodeClassLoader.asClassLoader());
 
-            restoreAndInvoke(invokable); // 触发执行Operator运行逻辑
+            // 触发执行Operator运行逻辑
+            restoreAndInvoke(invokable);
 
             // make sure, we enter the catch block if the task leaves the invoke() method due
             // to the fact that it has been canceled
@@ -940,6 +944,7 @@ public class Task
                 throw new CancelTaskException();
             }
 
+            // 通知各方task将进入running状态
             // notify everyone that we switched to running
             taskManagerActions.updateTaskExecutionState(
                     new TaskExecutionState(executionId, ExecutionState.RUNNING));
@@ -1316,8 +1321,7 @@ public class Task
     // ------------------------------------------------------------------------
 
     /**
-     * 触发checkpoint barrier
-     * Calls the invokable to trigger a checkpoint.
+     * 触发checkpoint barrier Calls the invokable to trigger a checkpoint.
      *
      * @param checkpointID The ID identifying the checkpoint.
      * @param checkpointTimestamp The timestamp associated with the checkpoint.

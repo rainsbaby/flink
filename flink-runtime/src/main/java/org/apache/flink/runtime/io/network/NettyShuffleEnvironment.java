@@ -70,6 +70,7 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 包含跟踪所有intermediate result和shuffle 数据变化的数据。
  * The implementation of {@link ShuffleEnvironment} based on netty network communication, local
  * memory and disk files. The network environment contains the data structures that keep track of
  * all intermediate results and shuffle data exchanges.
@@ -85,14 +86,17 @@ public class NettyShuffleEnvironment
 
     private final NettyShuffleEnvironmentConfiguration config;
 
+    // 相关的NetworkBufferPool
     private final NetworkBufferPool networkBufferPool;
 
+    // 管理input channel的物理连接
     private final ConnectionManager connectionManager;
 
     private final ResultPartitionManager resultPartitionManager;
 
     private final FileChannelManager fileChannelManager;
 
+    // 管理InputGate
     private final Map<InputGateID, SingleInputGate> inputGatesById;
 
     private final ResultPartitionFactory resultPartitionFactory;

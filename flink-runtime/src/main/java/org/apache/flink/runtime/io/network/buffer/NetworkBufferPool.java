@@ -50,7 +50,13 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * The NetworkBufferPool is a fixed size pool of {@link MemorySegment} instances for the network
+ * 固定大小的MemorySegment池。
+ * NetworkBufferPool创建LocalBufferPool，task从LocalBufferPool中获取buffer。
+ * 当新的local buffer创建后，NetworkBufferPool动态地重新分配buffer给所有pool。
+ * 每个task有一个LocalBufferPool，整个TaskManager中只有一个NetworkBufferPool，
+ * LocalBufferPool由NetworkBufferPool管理。
+ *
+ * <p>The NetworkBufferPool is a fixed size pool of {@link MemorySegment} instances for the network
  * stack.
  *
  * <p>The NetworkBufferPool creates {@link LocalBufferPool}s from which the individual tasks draw
@@ -66,6 +72,7 @@ public class NetworkBufferPool
 
     private final int memorySegmentSize;
 
+    // 管理所有可用的MemorySegment，内部为Direct Buffer
     private final ArrayDeque<MemorySegment> availableMemorySegments;
 
     private volatile boolean isDestroyed;
@@ -74,6 +81,7 @@ public class NetworkBufferPool
 
     private final Object factoryLock = new Object();
 
+    // 管理的BufferPool，每个task一个
     private final Set<LocalBufferPool> allBufferPools = new HashSet<>();
 
     private int numTotalRequiredBuffers;
@@ -475,6 +483,7 @@ public class NetworkBufferPool
     }
 
     // Must be called from synchronized block
+    // 把多余的segment也分配出去，利用起来
     private void redistributeBuffers() {
         assert Thread.holdsLock(factoryLock);
 

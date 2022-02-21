@@ -45,16 +45,15 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * 记录每个channel上接收到的checkpoint barrier。
- * 一旦接收到一个checkpoint id对应的所有checkpoint barrier，就通知所有listener(toNotifyOnCheckpoint)。
+ * 记录每个channel上接收到的checkpoint barrier。 一旦接收到一个checkpoint id对应的所有checkpoint
+ * barrier，就通知所有listener(toNotifyOnCheckpoint)。
  *
- * 不像SingleCheckpointBarrierHandler，CheckpointBarrierTracker不阻塞已发送barrier的input channel，
- * 因此不能用于保证 exactly-once。
- * 只能用于保证at least once。
+ * <p>不像SingleCheckpointBarrierHandler，CheckpointBarrierTracker不阻塞已发送barrier的input channel， 因此不能用于保证
+ * exactly-once。 只能用于保证at least once。
  *
- * The {@link CheckpointBarrierTracker} keeps track of what checkpoint barriers have been received
- * from which input channels. Once it has observed all checkpoint barriers for a checkpoint ID, it
- * notifies its listener of a completed checkpoint.
+ * <p>The {@link CheckpointBarrierTracker} keeps track of what checkpoint barriers have been
+ * received from which input channels. Once it has observed all checkpoint barriers for a checkpoint
+ * ID, it notifies its listener of a completed checkpoint.
  *
  * <p>Unlike the {@link SingleCheckpointBarrierHandler}, the BarrierTracker does not block the input
  * channels that have sent barriers, so it cannot be used to gain "exactly-once" processing

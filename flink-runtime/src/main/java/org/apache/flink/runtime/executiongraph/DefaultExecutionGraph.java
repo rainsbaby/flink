@@ -148,7 +148,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     /** All intermediate results that are part of this graph. */
     private final Map<IntermediateDataSetID, IntermediateResult> intermediateResults;
 
-    // 执行记录
+    // 当前执行
     /** The currently executed tasks, for callbacks. */
     private final Map<ExecutionAttemptID, Execution> currentExecutions;
 
@@ -185,7 +185,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
 
     private PartitionGroupReleaseStrategy partitionGroupReleaseStrategy;
 
-    private DefaultExecutionTopology executionTopology; //todo by guixian: ???
+    private DefaultExecutionTopology executionTopology; // todo by guixian: ???
 
     @Nullable private InternalFailuresListener internalTaskFailuresListener;
 
@@ -264,12 +264,12 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     private final ExecutionDeploymentListener executionDeploymentListener;
     private final ExecutionStateUpdateListener executionStateUpdateListener;
 
-    //todo by guixian: ???
+    // todo by guixian: ???
     private final EdgeManager edgeManager;
-
+    // 节点与具体执行的map
     private final Map<ExecutionVertexID, ExecutionVertex> executionVerticesById;
     private final Map<IntermediateResultPartitionID, IntermediateResultPartition>
-            resultPartitionsById;
+            resultPartitionsById; // todo by guixian: ???
 
     // --------------------------------------------------------------------------------------------
     //   Constructors

@@ -27,7 +27,9 @@ import java.io.IOException;
 
 import static org.apache.flink.util.Preconditions.checkArgument;
 
-/** A view to consume a {@link ResultSubpartition} instance. */
+/**
+ * 用于消费ResultSubpartition的view。
+ * A view to consume a {@link ResultSubpartition} instance. */
 public interface ResultSubpartitionView {
 
     /**

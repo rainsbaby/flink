@@ -116,7 +116,9 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * JobMaster implementation. The job master is responsible for the execution of a single {@link
+ * JobManager的实现。负责一个JobGraph的执行。
+ *
+ * <p>JobMaster implementation. The job master is responsible for the execution of a single {@link
  * JobGraph}.
  *
  * <p>It offers the following methods as part of its rpc interface to interact with the JobMaster

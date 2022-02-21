@@ -29,8 +29,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * The HighAvailabilityServices give access to all services needed for a highly-available setup. In
- * particular, the services provide access to highly available storage and registries, as well as
+ * 用于为ResourceManager、JobManager等提供高可用服务。 提供高可用的存储、注册，以及分布式累加器、leader选举等功能。
+ *
+ * <p>The HighAvailabilityServices give access to all services needed for a highly-available setup.
+ * In particular, the services provide access to highly available storage and registries, as well as
  * distributed counters and leader election.
  *
  * <ul>

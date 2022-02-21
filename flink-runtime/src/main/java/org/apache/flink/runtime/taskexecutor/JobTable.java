@@ -32,7 +32,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 /**
- * A {@link JobTable JobTable's} task is to manage the lifecycle of a job on the {@link
+ * 管理TaskExecutor中job的生命周期。
+ *
+ * <p>A {@link JobTable JobTable's} task is to manage the lifecycle of a job on the {@link
  * TaskExecutor}.
  *
  * <p>There can always only be at most one job per {@link JobID}. In order to create a {@link Job}

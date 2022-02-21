@@ -79,8 +79,10 @@ import java.util.Set;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * Class representing the streaming topology. It contains all the information necessary to build the
- * jobgraph for the execution.
+ * 由StreamNode & StreamEdge组成，可转化为JobGraph。
+ *
+ * <p>Class representing the streaming topology. It contains all the information necessary to build
+ * the jobgraph for the execution.
  */
 @Internal
 public class StreamGraph implements Pipeline {
@@ -681,6 +683,7 @@ public class StreamGraph implements Pipeline {
                             outputTag,
                             exchangeMode);
 
+            // 添加edge信息到StreamNode中
             getStreamNode(edge.getSourceId()).addOutEdge(edge);
             getStreamNode(edge.getTargetId()).addInEdge(edge);
         }

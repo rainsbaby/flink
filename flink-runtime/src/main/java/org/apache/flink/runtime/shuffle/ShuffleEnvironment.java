@@ -35,7 +35,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Interface for the implementation of shuffle service local environment.
+ * Shuffle service本地环境。
+ * Producer写入shuffle数据到buffer，从ResultPartitionWriter获取数据，consumer从InputGate读取buffer。
+ *
+ * <p>Interface for the implementation of shuffle service local environment.
  *
  * <p>Input/Output interface of local shuffle service environment is based on memory {@link Buffer
  * Buffers}. A producer can write shuffle data into the buffers, obtained from the created {@link
@@ -128,6 +131,7 @@ public interface ShuffleEnvironment<P extends ResultPartitionWriter, G extends I
             String ownerName, ExecutionAttemptID executionAttemptID, MetricGroup parentGroup);
 
     /**
+     * 创建ResultPartitionWriter
      * Factory method for the {@link ResultPartitionWriter ResultPartitionWriters} to produce result
      * partitions.
      *
@@ -163,6 +167,7 @@ public interface ShuffleEnvironment<P extends ResultPartitionWriter, G extends I
     Collection<ResultPartitionID> getPartitionsOccupyingLocalResources();
 
     /**
+     * 创建InputGate
      * Factory method for the {@link InputGate InputGates} to consume result partitions.
      *
      * <p>The order of the {@link InputGate InputGates} in the returned collection should be the

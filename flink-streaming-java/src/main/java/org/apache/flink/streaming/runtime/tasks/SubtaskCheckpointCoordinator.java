@@ -32,7 +32,7 @@ import java.util.function.Supplier;
 /**
  * 处理Task/StreamTask的checkpoint相关工作。
  *
- * Coordinates checkpointing-related work for a subtask (i.e. {@link
+ * <p>Coordinates checkpointing-related work for a subtask (i.e. {@link
  * org.apache.flink.runtime.taskmanager.Task Task} and {@link StreamTask}). Responsibilities:
  *
  * <ol>

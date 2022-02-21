@@ -47,7 +47,8 @@ import static org.apache.flink.util.Preconditions.checkState;
 /**
  * 执行subtask的backend snapshot的异步部分。
  *
- * This runnable executes the asynchronous parts of all involved backend snapshots for the subtask.
+ * <p>This runnable executes the asynchronous parts of all involved backend snapshots for the
+ * subtask.
  */
 final class AsyncCheckpointRunnable implements Runnable, Closeable {
 

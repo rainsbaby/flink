@@ -40,11 +40,11 @@ import static org.apache.flink.runtime.checkpoint.InflightDataRescalingDescripto
 /**
  * 一个Task内部所有operator的snapshot.
  *
- * This class encapsulates state handles to the snapshots of all operator instances executed within
- * one task. A task can run multiple operator instances as a result of operator chaining, and all
- * operator instances from the chain can register their state under their operator id. Each operator
- * instance is a physical execution responsible for processing a partition of the data that goes
- * through a logical operator. This partitioning happens to parallelize execution of logical
+ * <p>This class encapsulates state handles to the snapshots of all operator instances executed
+ * within one task. A task can run multiple operator instances as a result of operator chaining, and
+ * all operator instances from the chain can register their state under their operator id. Each
+ * operator instance is a physical execution responsible for processing a partition of the data that
+ * goes through a logical operator. This partitioning happens to parallelize execution of logical
  * operators, e.g. distributing a map function.
  *
  * <p>One instance of this class contains the information that one task will send to acknowledge a

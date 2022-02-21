@@ -594,6 +594,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
                 throw new TaskSubmissionException(message);
             }
 
+            // 标记slot为active状态。
             if (!taskSlotTable.tryMarkSlotActive(jobId, tdd.getAllocationId())) {
                 final String message =
                         "No task slot allocated for job ID "
@@ -608,8 +609,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
             // re-integrate offloaded data:
             try {
                 // 从BlobCache中load Job和Task信息
-                tdd.loadBigData(
-                        blobCacheService.getPermanentBlobService());
+                tdd.loadBigData(blobCacheService.getPermanentBlobService());
             } catch (IOException | ClassNotFoundException e) {
                 throw new TaskSubmissionException(
                         "Could not re-integrate offloaded TaskDeploymentDescriptor data.", e);
@@ -757,6 +757,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
             }
 
             if (taskAdded) {
+                // 启动task
                 task.startTaskThread();
 
                 setupResultPartitionBookkeeping(
@@ -1850,6 +1851,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
             final JobMasterGateway jobMasterGateway, final TaskExecutionState taskExecutionState) {
         final ExecutionAttemptID executionAttemptID = taskExecutionState.getID();
 
+        // 通知JobMaster
         CompletableFuture<Acknowledge> futureAcknowledge =
                 jobMasterGateway.updateTaskExecutionState(taskExecutionState);
 

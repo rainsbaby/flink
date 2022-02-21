@@ -100,7 +100,9 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
-/** The StreamingJobGraphGenerator converts a {@link StreamGraph} into a {@link JobGraph}. */
+/**
+ * 将StreamGraph转换为JobGraph。
+ * The StreamingJobGraphGenerator converts a {@link StreamGraph} into a {@link JobGraph}. */
 @Internal
 public class StreamingJobGraphGenerator {
 
@@ -157,6 +159,7 @@ public class StreamingJobGraphGenerator {
         jobGraph = new JobGraph(jobID, streamGraph.getJobName());
     }
 
+    // 生成JobGraph
     private JobGraph createJobGraph() {
         preValidate();
         jobGraph.setJobType(streamGraph.getJobType());
@@ -400,7 +403,7 @@ public class StreamingJobGraphGenerator {
             StreamNode currentNode = streamGraph.getStreamNode(currentNodeId);
 
             for (StreamEdge outEdge : currentNode.getOutEdges()) {
-                if (isChainable(outEdge, streamGraph)) {
+                if (isChainable(outEdge, streamGraph)) { // 是否可放入operator chain算子链
                     chainableOutputs.add(outEdge); // OperatorChain
                 } else {
                     nonChainableOutputs.add(outEdge);
@@ -456,7 +459,7 @@ public class StreamingJobGraphGenerator {
 
             StreamConfig config =
                     currentNodeId.equals(startNodeId)
-                            ? createJobVertex(startNodeId, chainInfo)
+                            ? createJobVertex(startNodeId, chainInfo) // 生成JobVertex
                             : new StreamConfig(new Configuration());
 
             setVertexConfig(

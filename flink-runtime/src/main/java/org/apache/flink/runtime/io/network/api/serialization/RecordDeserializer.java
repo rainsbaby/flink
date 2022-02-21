@@ -24,7 +24,9 @@ import org.apache.flink.util.CloseableIterator;
 
 import java.io.IOException;
 
-/** Interface for turning sequences of memory segments into records. */
+/**
+ * 将memory segment转化为record的接口。
+ * Interface for turning sequences of memory segments into records. */
 public interface RecordDeserializer<T extends IOReadableWritable> {
 
     /** Status of the deserialization result. */

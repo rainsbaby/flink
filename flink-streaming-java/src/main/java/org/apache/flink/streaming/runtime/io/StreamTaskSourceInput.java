@@ -35,7 +35,9 @@ import java.util.concurrent.CompletableFuture;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * Implementation of {@link StreamTaskInput} that reads data from the {@link SourceOperator} and
+ * 从SourceOperator读取数据，并返回DataInputStatus标识source为可用状态/不可用/已结束。
+ *
+ * <p>Implementation of {@link StreamTaskInput} that reads data from the {@link SourceOperator} and
  * returns the {@link DataInputStatus} to indicate whether the source state is available,
  * unavailable or finished.
  */

@@ -71,7 +71,10 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * An {@code ExecutionJobVertex} is part of the {@link ExecutionGraph}, and the peer to the {@link
+ * ExecutionGraph的组成部分，对应于JobGraph中的JobVertex。
+ * ExecutionJobVertex表示有1/n个并行度的operation，其中operation的一个并发对应一个ExecutionVertex。
+ *
+ * <p>An {@code ExecutionJobVertex} is part of the {@link ExecutionGraph}, and the peer to the {@link
  * JobVertex}.
  *
  * <p>The {@code ExecutionJobVertex} corresponds to a parallelized operation. It contains an {@link
@@ -89,10 +92,13 @@ public class ExecutionJobVertex
 
     private final JobVertex jobVertex;
 
+    // subtask的多个并发。可以通过ExecutionJobVertex+subtak的并发index来定位ExecutionVertex。
     private final ExecutionVertex[] taskVertices;
 
+    // JobVertex的输出
     private final IntermediateResult[] producedDataSets;
 
+    // 输入
     private final List<IntermediateResult> inputs;
 
     private final VertexParallelismInformation parallelismInfo;

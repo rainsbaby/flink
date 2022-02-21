@@ -139,6 +139,7 @@ public class ResultPartitionFactory {
 
         ResultSubpartition[] subpartitions = new ResultSubpartition[numberOfSubpartitions];
 
+        // 根据ResultPartitionType类型创建不同的ResultPartition
         final ResultPartition partition;
         if (type == ResultPartitionType.PIPELINED
                 || type == ResultPartitionType.PIPELINED_BOUNDED

@@ -63,7 +63,9 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
-/** An input channel, which requests a remote partition queue. */
+/**
+ * 请求远端partition queue的InputChannel。
+ * An input channel, which requests a remote partition queue. */
 public class RemoteInputChannel extends InputChannel {
     private static final Logger LOG = LoggerFactory.getLogger(RemoteInputChannel.class);
 
@@ -500,6 +502,7 @@ public class RemoteInputChannel extends InputChannel {
     }
 
     /**
+     * 处理InputBuffer。
      * Handles the input buffer. This method is taking over the ownership of the buffer and is fully
      * responsible for cleaning it up both on the happy path and in case of an error.
      */

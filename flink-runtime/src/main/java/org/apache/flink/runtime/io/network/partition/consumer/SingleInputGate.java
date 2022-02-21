@@ -68,7 +68,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * An input gate consumes one or more partitions of a single produced intermediate result.
+ * InputGate消费Intermediate Result中的一个或多个partition。
+ * 封装了InputChannel。
+ *
+ * <p>An input gate consumes one or more partitions of a single produced intermediate result.
  *
  * <p>Each intermediate result is partitioned over its producing parallel subtasks; each of these
  * partitions is furthermore partitioned into one or more subpartitions.
@@ -139,6 +142,8 @@ public class SingleInputGate extends IndexedInputGate {
     private final int numberOfInputChannels;
 
     /**
+     * 每个intermediate result partition有一个对应的input channel。
+     *
      * Input channels. There is a one input channel for each consumed intermediate result partition.
      * We store this in a map for runtime updates of single channels.
      */
@@ -170,6 +175,7 @@ public class SingleInputGate extends IndexedInputGate {
     private final PartitionProducerStateProvider partitionProducerStateProvider;
 
     /**
+     * 某个task对应的LocalBufferPool
      * Buffer pool for incoming buffers. Incoming data from remote channels is copied to buffers
      * from this pool.
      */
@@ -252,13 +258,14 @@ public class SingleInputGate extends IndexedInputGate {
         return inputChannelsWithData;
     }
 
+    // 分配LocalBufferPool，创建InputChannel
     @Override
     public void setup() throws IOException {
         checkState(
                 this.bufferPool == null,
                 "Bug in input gate setup logic: Already registered buffer pool.");
 
-        BufferPool bufferPool = bufferPoolFactory.get();
+        BufferPool bufferPool = bufferPoolFactory.get(); // 见NetworkBufferPool
         setBufferPool(bufferPool);
 
         setupChannels();
@@ -695,12 +702,14 @@ public class SingleInputGate extends IndexedInputGate {
             boolean blocking) throws IOException, InterruptedException {
         while (true) {
             synchronized (inputChannelsWithData) {
+                // 获取可读的channel
                 Optional<InputChannel> inputChannelOpt = getChannel(blocking);
                 if (!inputChannelOpt.isPresent()) {
                     return Optional.empty();
                 }
 
                 final InputChannel inputChannel = inputChannelOpt.get();
+                // 从InputChannel获取Buffer
                 Optional<BufferAndAvailability> bufferAndAvailabilityOpt =
                         inputChannel.getNextBuffer();
 
@@ -712,6 +721,7 @@ public class SingleInputGate extends IndexedInputGate {
                 final BufferAndAvailability bufferAndAvailability = bufferAndAvailabilityOpt.get();
                 if (bufferAndAvailability.moreAvailable()) {
                     // enqueue the inputChannel at the end to avoid starvation
+                    // Channel中还有更多未读读数据时，将其放入队列尾部，防止产饥饿（其他channel一直不被消费）
                     queueChannelUnsafe(inputChannel, bufferAndAvailability.morePriorityEvents());
                 }
 
@@ -959,6 +969,7 @@ public class SingleInputGate extends IndexedInputGate {
     }
 
     /**
+     * channel加入inputChannelsWithData队列
      * Queues the channel if not already enqueued and not received EndOfPartition, potentially
      * raising the priority.
      *
@@ -1002,6 +1013,7 @@ public class SingleInputGate extends IndexedInputGate {
             }
         }
 
+        // 从InputChannel队列中获取一个可读的InputChannel
         InputChannel inputChannel = inputChannelsWithData.poll();
         enqueuedInputChannelsWithData.clear(inputChannel.getChannelIndex());
 

@@ -55,7 +55,9 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * The ExecutionVertex is a parallel subtask of the execution. It may be executed once, or several
+ * 一个subtask的一个并发执行。可能执行一次，也可能执行多次，每次执行生成一个Execution。
+ *
+ * </p>The ExecutionVertex is a parallel subtask of the execution. It may be executed once, or several
  * times, each of which time it spawns an {@link Execution}.
  */
 public class ExecutionVertex
@@ -82,6 +84,7 @@ public class ExecutionVertex
     /** The name in the format "myTask (2/7)", cached to avoid frequent string concatenations. */
     private final String taskNameWithSubtask;
 
+    // 当前/最后一次的执行
     /** The current or latest execution attempt of this vertex's task. */
     private Execution currentExecution; // this field must never be null
 

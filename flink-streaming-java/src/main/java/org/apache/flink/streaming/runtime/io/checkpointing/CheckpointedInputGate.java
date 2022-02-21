@@ -50,8 +50,8 @@ import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 /**
  * CheckpointedInputGate使用CheckpointBarrierHandler，处理从InputGate得到的CheckpointBarrier。
  *
- * The {@link CheckpointedInputGate} uses {@link CheckpointBarrierHandler} to handle incoming {@link
- * CheckpointBarrier} from the {@link InputGate}.
+ * <p>The {@link CheckpointedInputGate} uses {@link CheckpointBarrierHandler} to handle incoming
+ * {@link CheckpointBarrier} from the {@link InputGate}.
  */
 @Internal
 public class CheckpointedInputGate implements PullingAsyncDataInput<BufferOrEvent>, Closeable {
@@ -61,7 +61,7 @@ public class CheckpointedInputGate implements PullingAsyncDataInput<BufferOrEven
 
     private final UpstreamRecoveryTracker upstreamRecoveryTracker;
 
-    //buffer的上游数据
+    // buffer的上游数据
     /** The gate that the buffer draws its input from. */
     private final InputGate inputGate;
 

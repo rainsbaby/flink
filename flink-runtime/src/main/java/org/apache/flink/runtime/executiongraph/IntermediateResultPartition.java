@@ -25,6 +25,10 @@ import org.apache.flink.runtime.scheduler.strategy.ConsumerVertexGroup;
 
 import java.util.List;
 
+/**
+ * IntermediateResult的一个输出分区。
+ * IntermediateResult可以包含0/n个输出分区。
+ */
 public class IntermediateResultPartition {
 
     private final IntermediateResult totalResult;

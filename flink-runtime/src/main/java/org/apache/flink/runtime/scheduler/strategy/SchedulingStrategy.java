@@ -26,7 +26,10 @@ import org.apache.flink.runtime.jobgraph.IntermediateResultPartitionID;
 import java.util.Set;
 
 /**
- * Component which encapsulates the scheduling logic. It can react to execution state changes and
+ * 封装调度逻辑。
+ * 响应调度状态变化和partition消费事件，处理task失败事件。
+ *
+ * <p>Component which encapsulates the scheduling logic. It can react to execution state changes and
  * partition consumable events. Moreover, it is responsible for resolving task failures.
  */
 public interface SchedulingStrategy {

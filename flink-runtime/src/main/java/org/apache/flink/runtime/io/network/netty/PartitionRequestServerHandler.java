@@ -38,7 +38,9 @@ import org.apache.flink.shaded.netty4.io.netty.channel.SimpleChannelInboundHandl
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Channel handler to initiate data transfers and dispatch backwards flowing task events. */
+/**
+ * 负责初始化数据传输和分配向后流转的task事件
+ * Channel handler to initiate data transfers and dispatch backwards flowing task events. */
 class PartitionRequestServerHandler extends SimpleChannelInboundHandler<NettyMessage> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PartitionRequestServerHandler.class);

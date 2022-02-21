@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 负责写record到channel中。
  * A regular record-oriented runtime result writer.
  *
  * <p>The ChannelSelectorRecordWriter extends the {@link RecordWriter} and emits records to the
@@ -36,6 +37,7 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 public final class ChannelSelectorRecordWriter<T extends IOReadableWritable>
         extends RecordWriter<T> {
 
+    // 决定写入到哪个channel
     private final ChannelSelector<T> channelSelector;
 
     ChannelSelectorRecordWriter(

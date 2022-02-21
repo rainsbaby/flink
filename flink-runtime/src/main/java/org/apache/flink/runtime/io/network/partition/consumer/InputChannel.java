@@ -38,6 +38,8 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 一个InputChannel消费一个ResultSubpartitionView。
+ * 实现类主要有Local和Remote。
  * An input channel consumes a single {@link ResultSubpartitionView}.
  *
  * <p>For each channel, the consumption life cycle is as follows:

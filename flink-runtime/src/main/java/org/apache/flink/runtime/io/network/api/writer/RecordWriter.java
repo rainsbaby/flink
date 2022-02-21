@@ -40,6 +40,8 @@ import java.util.concurrent.CompletableFuture;
 import static org.apache.flink.util.Preconditions.checkArgument;
 
 /**
+ * 负责写record到channel中。
+ * 主要实现类有ChannelSelectorRecordWriter和BroadcastRecordWriter，分别负责写入某个channel和写入所有channel。
  * An abstract record-oriented runtime result writer.
  *
  * <p>The RecordWriter wraps the runtime's {@link ResultPartitionWriter} and takes care of channel
@@ -55,6 +57,7 @@ public abstract class RecordWriter<T extends IOReadableWritable> implements Avai
 
     private static final Logger LOG = LoggerFactory.getLogger(RecordWriter.class);
 
+    // 要写入数据的ResultPartition todo by guixian: ???
     protected final ResultPartitionWriter targetPartition;
 
     protected final int numberOfChannels;

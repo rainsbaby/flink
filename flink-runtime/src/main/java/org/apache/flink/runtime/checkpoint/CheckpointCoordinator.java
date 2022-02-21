@@ -90,13 +90,11 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * 管理分布式operator的snapshot行为。
- * 发送消息到相应task来触发checkpoint的创建，接收task的回应。
- * 同时收集并管理state信息。
+ * 管理分布式operator的snapshot行为。 发送消息到相应task来触发checkpoint的创建，接收task的回应。 同时收集并管理state信息。
  *
- * todo by guixian: ??? 如何触发，如何存储，如何恢复，如何周期性执行
+ * <p>todo by guixian: ??? 如何触发，如何存储，如何恢复，如何周期性执行
  *
- * The checkpoint coordinator coordinates the distributed snapshots of operators and state. It
+ * <p>The checkpoint coordinator coordinates the distributed snapshots of operators and state. It
  * triggers the checkpoint by sending the messages to the relevant tasks and collects the checkpoint
  * acknowledgements. It also collects and maintains the overview of the state handles reported by
  * the tasks that acknowledge the checkpoint.
@@ -134,15 +132,15 @@ public class CheckpointCoordinator {
     /**
      * 已完成的checkpoint。
      *
-     * Completed checkpoints. Implementations can be blocking. Make sure calls to methods accessing
-     * this don't block the job manager actor and run asynchronously.
+     * <p>Completed checkpoints. Implementations can be blocking. Make sure calls to methods
+     * accessing this don't block the job manager actor and run asynchronously.
      */
     private final CompletedCheckpointStore completedCheckpointStore;
 
     /**
      * checkpoint存储
      *
-     * The root checkpoint state backend, which is responsible for initializing the checkpoint,
+     * <p>The root checkpoint state backend, which is responsible for initializing the checkpoint,
      * storing the metadata, and cleaning up the checkpoint.
      */
     private final CheckpointStorageCoordinatorView checkpointStorageView;
@@ -151,12 +149,11 @@ public class CheckpointCoordinator {
     private final ArrayDeque<Long> recentPendingCheckpoints;
 
     /**
-     * 创建递增的checkpoint id。
-     * 保证在有job manager宕机master变化的情况下，checkpoint id都是递增的。
+     * 创建递增的checkpoint id。 保证在有job manager宕机master变化的情况下，checkpoint id都是递增的。
      * 有zookeeper/kubernetes等实现
      *
-     * Checkpoint ID counter to ensure ascending IDs. In case of job manager failures, these need to
-     * be ascending across job managers.
+     * <p>Checkpoint ID counter to ensure ascending IDs. In case of job manager failures, these need
+     * to be ascending across job managers.
      */
     private final CheckpointIDCounter checkpointIdCounter;
 
@@ -176,11 +173,10 @@ public class CheckpointCoordinator {
     private final long minPauseBetweenCheckpoints;
 
     /**
-     * 处理checkpoint超时及触发周期性的checkpoint。
-     * 必须是单线程。
+     * 处理checkpoint超时及触发周期性的checkpoint。 必须是单线程。
      *
-     * The timer that handles the checkpoint timeouts and triggers periodic checkpoints. It must be
-     * single-threaded. Eventually it will be replaced by main thread executor.
+     * <p>The timer that handles the checkpoint timeouts and triggers periodic checkpoints. It must
+     * be single-threaded. Eventually it will be replaced by main thread executor.
      */
     private final ScheduledExecutor timer;
 
@@ -372,7 +368,6 @@ public class CheckpointCoordinator {
     // --------------------------------------------------------------------------------------------
 
     /**
-     *
      * Adds the given master hook to the checkpoint coordinator. This method does nothing, if the
      * checkpoint coordinator already contained a hook with the same ID (as defined via {@link
      * MasterTriggerRestoreHook#getIdentifier()}).
@@ -511,8 +506,6 @@ public class CheckpointCoordinator {
     }
 
     /**
-     *
-     *
      * Triggers a new standard checkpoint and uses the given timestamp as the checkpoint timestamp.
      * The return value is a future. It completes when the checkpoint triggered finishes or an error
      * occurred.
@@ -827,7 +820,7 @@ public class CheckpointCoordinator {
     /**
      * todo by guixian: what master ???
      *
-     * Snapshot master hook states asynchronously.
+     * <p>Snapshot master hook states asynchronously.
      *
      * @param checkpoint the pending checkpoint
      * @return the future represents master hook states are finished or not
@@ -1451,12 +1444,10 @@ public class CheckpointCoordinator {
                 false); // see explanation above
     }
 
-
     /**
-     * 从最近一个checkpoint恢复所有task和coordinator
-     * todo by guixian: ???
+     * 从最近一个checkpoint恢复所有task和coordinator todo by guixian: ???
      *
-     * Restores the latest checkpointed state to all tasks and all coordinators. This method
+     * <p>Restores the latest checkpointed state to all tasks and all coordinators. This method
      * represents a "global restore"-style operation where all stateful tasks and coordinators from
      * the given set of Job Vertices are restored. are restored to their latest checkpointed state.
      *

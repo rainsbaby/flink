@@ -40,7 +40,7 @@ import static org.apache.flink.util.Preconditions.checkState;
 /**
  * 处理接收到的checkpoint barrier。
  *
- * The {@link CheckpointBarrierHandler} reacts to checkpoint barrier arriving from the input
+ * <p>The {@link CheckpointBarrierHandler} reacts to checkpoint barrier arriving from the input
  * channels. Different implementations may either simply track barriers, or block certain inputs on
  * barriers.
  */

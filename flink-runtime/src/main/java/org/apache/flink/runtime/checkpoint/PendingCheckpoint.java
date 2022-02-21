@@ -57,11 +57,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * PendingCheckpoint表示，已开始checkpoint，但还没有集齐所有task的回应。
- * 一旦收到所有task的回应，就变为CompletedCheckpoint。
+ * PendingCheckpoint表示，已开始checkpoint，但还没有集齐所有task的回应。 一旦收到所有task的回应，就变为CompletedCheckpoint。
  *
- * A pending checkpoint is a checkpoint that has been started, but has not been acknowledged by all
- * tasks that need to acknowledge it. Once all tasks have acknowledged it, it becomes a {@link
+ * <p>A pending checkpoint is a checkpoint that has been started, but has not been acknowledged by
+ * all tasks that need to acknowledge it. Once all tasks have acknowledged it, it becomes a {@link
  * CompletedCheckpoint}.
  *
  * <p>Note that the pending checkpoint, as well as the successful checkpoint keep the state handles

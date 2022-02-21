@@ -114,7 +114,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A DataStream represents a stream of elements of the same type. A DataStream can be transformed
+ * 表示同一种类型的元素组成的流。可以由map等方法转换成其他类型等DataStream。
+ *
+ * <p>A DataStream represents a stream of elements of the same type. A DataStream can be transformed
  * into another DataStream by applying a transformation as for example:
  *
  * <ul>

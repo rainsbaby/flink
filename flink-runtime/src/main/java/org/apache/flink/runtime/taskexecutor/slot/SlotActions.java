@@ -35,7 +35,7 @@ public interface SlotActions {
     /**
      * todo by guixian: ???
      *
-     * Timeout the task slot for the given allocation id. The timeout is identified by the given
+     * <p>Timeout the task slot for the given allocation id. The timeout is identified by the given
      * ticket to filter invalid timeouts out.
      *
      * @param allocationId identifying the task slot to be timed out

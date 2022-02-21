@@ -36,11 +36,11 @@ import java.util.concurrent.Future;
 public interface CheckpointableTask {
 
     /**
-     * 用于checkpoint coordinator异步触发checkpoint。
-     * Task中插入初始barrier来开始checkpoint。
+     * 用于checkpoint coordinator异步触发checkpoint。 Task中插入初始barrier来开始checkpoint。
      * 下游operator接收barrier，通过triggerCheckpointOnBarrier方法触发checkpoint。
      *
-     * This method is called to trigger a checkpoint, asynchronously by the checkpoint coordinator.
+     * <p>This method is called to trigger a checkpoint, asynchronously by the checkpoint
+     * coordinator.
      *
      * <p>This method is called for tasks that start the checkpoints by injecting the initial
      * barriers, i.e., the source tasks. In contrast, checkpoints on downstream operators, which are
@@ -59,7 +59,7 @@ public interface CheckpointableTask {
     /**
      * 接收到所有input stream的barrier后，触发本task的checkpoint
      *
-     * This method is called when a checkpoint is triggered as a result of receiving checkpoint
+     * <p>This method is called when a checkpoint is triggered as a result of receiving checkpoint
      * barriers on all input streams.
      *
      * @param checkpointMetaData Meta data for about this checkpoint

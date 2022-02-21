@@ -28,7 +28,8 @@ import java.util.concurrent.CompletableFuture;
 /**
  * 管理ResourceManager
  *
- * Service that maintains lifecycle of {@link ResourceManager}. */
+ * <p>Service that maintains lifecycle of {@link ResourceManager}.
+ */
 public interface ResourceManagerService extends AutoCloseableAsync {
 
     /**

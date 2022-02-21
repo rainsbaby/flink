@@ -61,7 +61,10 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
-/** Adapter of {@link ExecutionGraph} to {@link SchedulingTopology}. */
+/**
+ * SchedulingTopology的适配器。
+ * Adapter of {@link ExecutionGraph} to {@link SchedulingTopology}.
+ * */
 public class DefaultExecutionTopology implements SchedulingTopology {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultExecutionTopology.class);

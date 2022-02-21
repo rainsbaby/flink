@@ -22,7 +22,12 @@ import org.apache.flink.test.util.AbstractTestBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
+import java.util.concurrent.RecursiveTask;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /** For my own test. */
 public class GxTest extends AbstractTestBase {
@@ -149,6 +154,76 @@ public class GxTest extends AbstractTestBase {
             e.printStackTrace();
         }
         System.out.println("Main over");
+    }
+
+    @Test
+    public void testAtomicIntegerFieldUpdater() {
+        AtomicIntegerFieldUpdater<Location> updater =
+                AtomicIntegerFieldUpdater.newUpdater(Location.class, "x");
+        Location location = new Location(1, 2);
+        updater.getAndIncrement(location);
+        System.out.println("x value: " + location.getX());
+    }
+
+    @Test
+    public void testForkJoinPool() throws ExecutionException, InterruptedException {
+        ForkJoinPool pool = ForkJoinPool.commonPool();
+        Future<Integer> future = pool.submit(new AddAction(1, 100));
+        System.out.println("sum: " + future.get());
+    }
+
+    class AddAction extends RecursiveTask<Integer> {
+        int l;
+        int h;
+
+        public AddAction(int l, int h) {
+            this.l = l;
+            this.h = h;
+        }
+
+        @Override
+        protected Integer compute() {
+            int sum = 0;
+            if (l + 5 >= h) {
+                for (int i = l; i <= h; i++) {
+                    sum += i;
+                }
+            } else {
+                int mid = (l + h) >>> 1;
+                AddAction left = new AddAction(l, mid);
+                AddAction right = new AddAction(mid + 1, h);
+                left.fork();
+                right.fork();
+                sum = left.join() + right.join();
+            }
+            return sum;
+        }
+    }
+
+    class Location {
+        protected volatile int x;
+        private int y;
+
+        public Location(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
     }
 
     static class GxThread extends Thread {

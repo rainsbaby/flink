@@ -33,6 +33,7 @@ public class StreamMap<IN, OUT> extends AbstractUdfStreamOperator<OUT, MapFuncti
         chainingStrategy = ChainingStrategy.ALWAYS;
     }
 
+    // 调用userFunction，执行map逻辑
     @Override
     public void processElement(StreamRecord<IN> element) throws Exception {
         output.collect(element.replace(userFunction.map(element.getValue())));

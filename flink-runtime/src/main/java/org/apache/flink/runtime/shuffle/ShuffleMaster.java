@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * Intermediate result partition中JobMaster中的注册
  * Intermediate result partition registry to use in {@link
  * org.apache.flink.runtime.jobmaster.JobMaster}.
  *

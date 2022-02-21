@@ -93,10 +93,11 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * 负责job的提交、存储、JobManager生成及在JobManager的master宕机时进行恢复. Base class for the Dispatcher component. The Dispatcher component is
- * responsible for receiving job submissions, persisting them, spawning JobManagers to execute the
- * jobs and to recover them in case of a master failure. Furthermore, it knows about the state of
- * the Flink session cluster.
+ * 负责job的提交、存储、JobManager生成及在JobManager的master宕机时进行恢复。
+ *
+ * <p>Base class for the Dispatcher component. The Dispatcher component is responsible for receiving
+ * job submissions, persisting them, spawning JobManagers to execute the jobs and to recover them in
+ * case of a master failure. Furthermore, it knows about the state of the Flink session cluster.
  */
 public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<DispatcherId>
         implements DispatcherGateway {
@@ -169,6 +170,7 @@ public abstract class Dispatcher extends PermanentlyFencedRpcEndpoint<Dispatcher
         this.metricServiceQueryAddress = dispatcherServices.getMetricQueryServiceAddress();
         this.ioExecutor = dispatcherServices.getIoExecutor();
 
+        // todo by guixian: ??? NetworkBufferPool
         this.jobManagerSharedServices =
                 JobManagerSharedServices.fromConfiguration(
                         configuration, blobServer, fatalErrorHandler);

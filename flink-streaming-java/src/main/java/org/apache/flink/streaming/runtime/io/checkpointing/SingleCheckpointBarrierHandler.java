@@ -53,12 +53,10 @@ import static org.apache.flink.runtime.checkpoint.CheckpointFailureReason.CHECKP
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * 当读取第一个barrier后，记录接收的barrier数目，并消费barrier触发checkpoint。
- * 同一时刻只能追踪一个checkpoint。
- * for exactly-once.
+ * 当读取第一个barrier后，记录接收的barrier数目，并消费barrier触发checkpoint。 同一时刻只能追踪一个checkpoint。 for exactly-once.
  *
- * {@link SingleCheckpointBarrierHandler} is used for triggering checkpoint while reading the first
- * barrier and keeping track of the number of received barriers and consumed barriers. It can
+ * <p>{@link SingleCheckpointBarrierHandler} is used for triggering checkpoint while reading the
+ * first barrier and keeping track of the number of received barriers and consumed barriers. It can
  * handle/track just single checkpoint at a time. The behaviour when to actually trigger the
  * checkpoint and what the {@link CheckpointableInput} should do is controlled by {@link
  * BarrierHandlerState}.
@@ -78,7 +76,7 @@ public class SingleCheckpointBarrierHandler extends CheckpointBarrierHandler {
     /**
      * checkpoint id，保证从不同的channel读取到相同到barrier但是只会触发一个checkpoint
      *
-     * The checkpoint id to guarantee that we would trigger only one checkpoint when reading the
+     * <p>The checkpoint id to guarantee that we would trigger only one checkpoint when reading the
      * same barrier from different channels.
      */
     private long currentCheckpointId = -1L;

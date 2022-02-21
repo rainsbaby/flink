@@ -32,9 +32,11 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
- * A <b>State Backend</b> defines how the state of a streaming application is stored locally within
- * the cluster. Different State Backends store their state in different fashions, and use different
- * data structures to hold the state of a running application.
+ * 定义流式应用的状态如何在本地存储。
+ *
+ * <p>A <b>State Backend</b> defines how the state of a streaming application is stored locally
+ * within the cluster. Different State Backends store their state in different fashions, and use
+ * different data structures to hold the state of a running application.
  *
  * <p>For example, the {@link org.apache.flink.runtime.state.hashmap.HashMapStateBackend hashmap
  * state backend} keeps working state in the memory of the TaskManager. The backend is lightweight

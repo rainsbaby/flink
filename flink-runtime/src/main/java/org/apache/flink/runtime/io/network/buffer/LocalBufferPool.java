@@ -37,7 +37,10 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
- * A buffer pool used to manage a number of {@link Buffer} instances from the {@link
+ * 负责管理从NetworkBufferPool得到的一批buffer。
+ * 每个task有一个LocalBufferPool，整个TaskManager中只有一个NetworkBufferPool。
+ *
+ * <p>A buffer pool used to manage a number of {@link Buffer} instances from the {@link
  * NetworkBufferPool}.
  *
  * <p>Buffer requests are mediated to the network buffer pool to ensure dead-lock free operation of
@@ -67,14 +70,18 @@ class LocalBufferPool implements BufferPool {
 
     private static final int UNKNOWN_CHANNEL = -1;
 
-    /** Global network buffer pool to get buffers from. */
+    /**
+     * 从NetworkBufferPool申请buffer
+     * Global network buffer pool to get buffers from. */
     private final NetworkBufferPool networkBufferPool;
 
     /** The minimum number of required segments for this pool. */
     private final int numberOfRequiredMemorySegments;
 
     /**
-     * The currently available memory segments. These are segments, which have been requested from
+     * 当前可用的segment。
+     *
+     * <p>The currently available memory segments. These are segments, which have been requested from
      * the network buffer pool and are currently not handed out as Buffer instances.
      *
      * <p><strong>BEWARE:</strong> Take special care with the interactions between this lock and

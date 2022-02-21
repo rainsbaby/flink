@@ -44,14 +44,13 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * OperatorCoordinatorHolder持有OperatorCoordinator，管理它与其他组件的交互。
- * 为checkpoint和exactly once语义提供上下文并进行保证。
+ * OperatorCoordinatorHolder持有OperatorCoordinator，管理它与其他组件的交互。 为checkpoint和exactly once语义提供上下文并进行保证。
  *
- * exactly-one语义，描述在OperatorCoordinator.checkpointCoordinator()中。
+ * <p>exactly-one语义，描述在OperatorCoordinator.checkpointCoordinator()中。
  * exactly-one语义保证同一时刻只有一个checkpoint在执行。
  *
- * The {@code OperatorCoordinatorHolder} holds the {@link OperatorCoordinator} and manages all its
- * interactions with the remaining components. It provides the context and is responsible for
+ * <p>The {@code OperatorCoordinatorHolder} holds the {@link OperatorCoordinator} and manages all
+ * its interactions with the remaining components. It provides the context and is responsible for
  * checkpointing and exactly once semantics.
  *
  * <h3>Exactly-one Semantics</h3>

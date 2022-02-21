@@ -58,9 +58,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * 每个TaskExecutor相关services。
  *
- * Container for {@link TaskExecutor} services such as the {@link MemoryManager}, {@link IOManager},
- * {@link ShuffleEnvironment}. All services are exclusive to a single {@link TaskExecutor}.
- * Consequently, the respective {@link TaskExecutor} is responsible for closing them.
+ * <p>Container for {@link TaskExecutor} services such as the {@link MemoryManager}, {@link
+ * IOManager}, {@link ShuffleEnvironment}. All services are exclusive to a single {@link
+ * TaskExecutor}. Consequently, the respective {@link TaskExecutor} is responsible for closing them.
  */
 public class TaskManagerServices {
     private static final Logger LOG = LoggerFactory.getLogger(TaskManagerServices.class);
@@ -72,6 +72,9 @@ public class TaskManagerServices {
 
     private final long managedMemorySize;
     private final IOManager ioManager;
+
+    // 每个TaskManager中有一个NettyShuffleEnvironment，每个NettyShuffleEnvironment中
+    // 有一个NetworkBufferPool
     private final ShuffleEnvironment<?, ?> shuffleEnvironment;
     private final KvStateService kvStateService;
     private final BroadcastVariableManager broadcastVariableManager;
@@ -253,6 +256,7 @@ public class TaskManagerServices {
     // --------------------------------------------------------------------------------------------
 
     /**
+     * 启动TaskManager相关的服务，如Netty、KvState服务等。
      * Creates and returns the task manager services.
      *
      * @param taskManagerServicesConfiguration task manager configuration
@@ -280,13 +284,14 @@ public class TaskManagerServices {
         final IOManager ioManager =
                 new IOManagerAsync(taskManagerServicesConfiguration.getTmpDirPaths());
 
+        // Netty相关
         final ShuffleEnvironment<?, ?> shuffleEnvironment =
                 createShuffleEnvironment(
                         taskManagerServicesConfiguration,
                         taskEventDispatcher,
                         taskManagerMetricGroup,
                         ioExecutor);
-        final int listeningDataPort = shuffleEnvironment.start();
+        final int listeningDataPort = shuffleEnvironment.start(); // 启动NettyServer和NettyClient
 
         final KvStateService kvStateService =
                 KvStateService.fromConfiguration(taskManagerServicesConfiguration);

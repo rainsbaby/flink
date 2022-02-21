@@ -64,8 +64,12 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * Akka rpc actor which receives {@link LocalRpcInvocation}, {@link RunAsync} and {@link CallAsync}
- * {@link ControlMessages} messages.
+ * 接收Rpc消息，交给对应等对象进行处理。
+ *
+ * <p>Flink基于Akka搭建RPC服务，用于JobManager、TaskManager等的交互.
+ *
+ * <p>Akka rpc actor which receives {@link LocalRpcInvocation}, {@link RunAsync} and {@link
+ * CallAsync} {@link ControlMessages} messages.
  *
  * <p>The {@link LocalRpcInvocation} designates a rpc and is dispatched to the given {@link
  * RpcEndpoint} instance.

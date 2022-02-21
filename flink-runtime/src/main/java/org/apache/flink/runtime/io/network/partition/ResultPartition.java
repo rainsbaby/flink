@@ -48,9 +48,10 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
- * 一个task生成的数据的partition。
+ * 一个task生成的数据partition。
+ * 实现ResultPartitionWriter接口，进行数据写入功能。
  *
- * A result partition for data produced by a single task.
+ * <p>A result partition for data produced by a single task.
  *
  * <p>This class is the runtime part of a logical {@link IntermediateResultPartition}. Essentially,
  * a result partition is a collection of {@link Buffer} instances. The buffers are organized in one

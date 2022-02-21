@@ -66,9 +66,11 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * This class implements the BLOB server. The BLOB server is responsible for listening for incoming
- * requests and spawning threads to handle these requests. Furthermore, it takes care of creating
- * the directory structure to store the BLOBs or temporarily cache them.
+ * 负责监听request，并分配给某个线程处理。 主要负责jar包的管理。
+ *
+ * <p>This class implements the BLOB server. The BLOB server is responsible for listening for
+ * incoming requests and spawning threads to handle these requests. Furthermore, it takes care of
+ * creating the directory structure to store the BLOBs or temporarily cache them.
  */
 public class BlobServer extends Thread
         implements BlobService, BlobWriter, PermanentBlobService, TransientBlobService {

@@ -117,7 +117,8 @@ import static org.apache.flink.util.Preconditions.checkState;
 /**
  * Job调度（start、cancel、stop等），及checkpoint创建.
  *
- * Base class which can be used to implement {@link SchedulerNG}. */
+ * <p>Base class which can be used to implement {@link SchedulerNG}.
+ */
 public abstract class SchedulerBase implements SchedulerNG, CheckpointScheduling {
 
     private final Logger log;

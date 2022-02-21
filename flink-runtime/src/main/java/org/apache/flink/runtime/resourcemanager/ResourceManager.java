@@ -95,8 +95,8 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 /**
  * ResourceManager负责资源申请/释放/管理
  *
- * ResourceManager implementation. The resource manager is responsible for resource de-/allocation
- * and bookkeeping.
+ * <p>ResourceManager implementation. The resource manager is responsible for resource
+ * de-/allocation and bookkeeping.
  *
  * <p>It offers the following methods as part of its rpc interface to interact with him remotely:
  *

@@ -23,7 +23,9 @@ import javax.annotation.Nonnull;
 import java.util.UUID;
 
 /**
- * Interface for a service which allows to elect a leader among a group of contenders.
+ * 使一个contender可以开始参与选举的接口。
+ *
+ * <p>Interface for a service which allows to elect a leader among a group of contenders.
  *
  * <p>Prior to using this service, it has to be started calling the start method. The start method
  * takes the contender as a parameter. If there are multiple contenders, then each contender has to

@@ -53,11 +53,10 @@ import java.util.stream.Collectors;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * JobManager接收JobGraph进行调用。
- * JobGraph是由vertices及中间结果构成一个DAG。
+ * JobManager接收JobGraph进行调用。 JobGraph是由vertices及中间结果构成一个DAG。
  *
- * The JobGraph represents a Flink dataflow program, at the low level that the JobManager accepts.
- * All programs from higher level APIs are transformed into JobGraphs.
+ * <p>The JobGraph represents a Flink dataflow program, at the low level that the JobManager
+ * accepts. All programs from higher level APIs are transformed into JobGraphs.
  *
  * <p>The JobGraph is a graph of vertices and intermediate results that are connected together to
  * form a DAG. Note that iterations (feedback edges) are currently not encoded inside the JobGraph

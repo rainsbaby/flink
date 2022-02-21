@@ -44,7 +44,9 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Channel handler to read the messages of buffer response or error response from the producer, to
+ * 读取buffer response消息，或来自producer的error reponse
+ *
+ * <p>Channel handler to read the messages of buffer response or error response from the producer, to
  * write and flush the unannounced credits for the producer.
  *
  * <p>It is used in the new network credit-based mode.
@@ -257,6 +259,7 @@ class CreditBasedPartitionRequestClientHandler extends ChannelInboundHandlerAdap
         }
     }
 
+    // decode消息
     private void decodeMsg(Object msg) throws Throwable {
         final Class<?> msgClazz = msg.getClass();
 
@@ -332,6 +335,7 @@ class CreditBasedPartitionRequestClientHandler extends ChannelInboundHandlerAdap
         if (bufferOrEvent.isBuffer() && bufferOrEvent.bufferSize == 0) {
             inputChannel.onEmptyBuffer(bufferOrEvent.sequenceNumber, bufferOrEvent.backlog);
         } else if (bufferOrEvent.getBuffer() != null) {
+            // 将buffer传递给InputChannel，加入队列
             inputChannel.onBuffer(
                     bufferOrEvent.getBuffer(), bufferOrEvent.sequenceNumber, bufferOrEvent.backlog);
         } else {

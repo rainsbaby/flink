@@ -133,6 +133,7 @@ public class NettyShuffleServiceFactory
                                 resultPartitionManager, taskEventPublisher, nettyConfig)
                         : new LocalConnectionManager();
 
+        // 每个NettyShuffleEnvironment中有一个NetworkBufferPool
         NetworkBufferPool networkBufferPool =
                 new NetworkBufferPool(
                         config.numNetworkBuffers(),

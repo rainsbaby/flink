@@ -137,14 +137,13 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
- * 每个StreamTask执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。
- * Operator chain在一个线程中同步执行，因此有同样的stream paritition。
- * Operator chain中有一个head operator和多个chained operator。
+ * 每个StreamTask执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。 Operator
+ * chain在一个线程中同步执行，因此有同样的stream paritition。 Operator chain中有一个head operator和多个chained operator。
  * 有one-input和two-input 类型的head operator。
  *
- * Base class for all streaming tasks. A task is the unit of local processing that is deployed and
- * executed by the TaskManagers. Each task runs one or more {@link StreamOperator}s which form the
- * Task's operator chain. Operators that are chained together execute synchronously in the same
+ * <p>Base class for all streaming tasks. A task is the unit of local processing that is deployed
+ * and executed by the TaskManagers. Each task runs one or more {@link StreamOperator}s which form
+ * the Task's operator chain. Operators that are chained together execute synchronously in the same
  * thread and hence on the same stream partition. A common case for these chains are successive
  * map/flatmap/filter tasks.
  *
@@ -492,9 +491,10 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
     protected void cancelTask() throws Exception {}
 
     /**
+     * Task接收到上游record的默认处理流程。
      * todo by guixian: ???
      *
-     * This method implements the default action of the task (e.g. processing one event from the
+     * <p>This method implements the default action of the task (e.g. processing one event from the
      * input). Implementations should (in general) be non-blocking.
      *
      * @param controller controller object for collaborative interaction between the action and the
@@ -502,6 +502,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
      * @throws Exception on any problems in the action.
      */
     protected void processInput(MailboxDefaultAction.Controller controller) throws Exception {
+        // 从InputGate中获取record，并进行处理
         DataInputStatus status = inputProcessor.processInput();
         switch (status) {
             case MORE_AVAILABLE:
@@ -753,6 +754,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
         }
     }
 
+    // todo by guixian: 重点内容
     @Override
     public final void invoke() throws Exception {
         // Allow invoking method 'invoke' without having to call 'restore' before it.
@@ -1221,8 +1223,8 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
             if (!inputGate.isFinished()) {
                 for (InputChannelInfo channelInfo : inputGate.getUnfinishedChannels()) {
                     // 根据配置的不同，选择不同的handler
-                    //exactly-once: SingleCheckpointBarrierHandler
-                    //at-least-once: CheckpointBarrierTracker
+                    // exactly-once: SingleCheckpointBarrierHandler
+                    // at-least-once: CheckpointBarrierTracker
                     checkpointBarrierHandler.get().processBarrier(barrier, channelInfo, true);
                 }
             }
@@ -1263,6 +1265,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
         return Optional.empty();
     }
 
+    // todo by guixian: checkpoint 具体存储哪些内容？存在哪里？
     @Override
     public void triggerCheckpointOnBarrier(
             CheckpointMetaData checkpointMetaData,

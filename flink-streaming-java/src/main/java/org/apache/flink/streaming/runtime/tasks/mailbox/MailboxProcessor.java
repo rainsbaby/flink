@@ -73,6 +73,7 @@ public class MailboxProcessor implements Closeable {
     protected final TaskMailbox mailbox;
 
     /**
+     * 默认重复执行的Action，例如record处理。
      * Action that is repeatedly executed if no action request is in the mailbox. Typically record
      * processing.
      */
@@ -179,6 +180,9 @@ public class MailboxProcessor implements Closeable {
     }
 
     /**
+     * Task的主要数据处理工作，循环处理mailbox。
+     * 可调用suspend来暂停循环，之后再次调用runMailboxLoop方法恢复循环。
+     *
      * Runs the mailbox processing loop. This is where the main work is done. This loop can be
      * suspended at any time by calling {@link #suspend()}. For resuming the loop this method should
      * be called again.
@@ -300,6 +304,8 @@ public class MailboxProcessor implements Closeable {
     }
 
     /**
+     * 处理mailbox中的特殊mail。
+     *
      * This helper method handles all special actions from the mailbox. In the current design, this
      * method also evaluates all control flag changes. This keeps the hot path in {@link
      * #runMailboxLoop()} free from any other flag checking, at the cost that all flag changes must
@@ -350,6 +356,7 @@ public class MailboxProcessor implements Closeable {
             if (processedMails++ == 0) {
                 maybePauseIdleTimer();
             }
+            // todo by guixian: ???
             maybeMail.get().run();
             if (singleStep) {
                 break;

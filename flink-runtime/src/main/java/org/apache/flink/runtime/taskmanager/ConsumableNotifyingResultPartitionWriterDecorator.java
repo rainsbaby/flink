@@ -38,7 +38,9 @@ import java.util.concurrent.CompletableFuture;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
- * A utility to wrap a {@link ResultPartitionWriter} for that sends a "consumable" notification on
+ * 包装ResultPartitionWriter，可在第一个record生成时发送一条可消费的通知。
+ *
+ * <p>A utility to wrap a {@link ResultPartitionWriter} for that sends a "consumable" notification on
  * the first record.
  *
  * <p>Note: This is only needed for lazy batch scheduling and thus an artifact that can be removed
@@ -91,6 +93,7 @@ public class ConsumableNotifyingResultPartitionWriterDecorator {
 
         private final ResultPartitionWriter partitionWriter;
 
+        // 通知当前ResultPartition有数据可供消费的回调
         private final ResultPartitionConsumableNotifier partitionConsumableNotifier;
 
         private boolean hasNotifiedPipelinedConsumers;
@@ -130,6 +133,7 @@ public class ConsumableNotifyingResultPartitionWriterDecorator {
         public void emitRecord(ByteBuffer record, int targetSubpartition) throws IOException {
             partitionWriter.emitRecord(record, targetSubpartition);
 
+            // 通知JobMaster有数据可消费
             notifyPipelinedConsumers();
         }
 
@@ -223,6 +227,7 @@ public class ConsumableNotifyingResultPartitionWriterDecorator {
         }
 
         /**
+         * 通知JobMaster有数据可消费。
          * Notifies pipelined consumers of this result partition once.
          *
          * <p>For PIPELINED {@link
@@ -234,6 +239,7 @@ public class ConsumableNotifyingResultPartitionWriterDecorator {
                 partitionConsumableNotifier.notifyPartitionConsumable(
                         jobId, partitionWriter.getPartitionId(), taskActions);
 
+                // 只在第一条record时发通知
                 hasNotifiedPipelinedConsumers = true;
             }
         }

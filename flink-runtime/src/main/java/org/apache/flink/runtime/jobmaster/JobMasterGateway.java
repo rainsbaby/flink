@@ -105,6 +105,7 @@ public interface JobMasterGateway
             final IntermediateDataSetID intermediateResultId, final ResultPartitionID partitionId);
 
     /**
+     * 通知JobManager某个partition可用。
      * Notifies the JobManager about available data for a produced partition.
      *
      * <p>There is a call to this method for each {@link ExecutionVertex} instance once per produced

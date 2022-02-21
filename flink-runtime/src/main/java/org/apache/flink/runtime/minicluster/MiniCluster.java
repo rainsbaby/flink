@@ -645,6 +645,7 @@ public class MiniCluster implements AutoCloseableAsync {
         synchronized (lock) {
             final Configuration configuration = miniClusterConfiguration.getConfiguration();
 
+            // 创建TaskManager
             final TaskExecutor taskExecutor =
                     TaskManagerRunner.startTaskManager(
                             configuration,
@@ -659,6 +660,7 @@ public class MiniCluster implements AutoCloseableAsync {
                             taskManagerTerminatingFatalErrorHandlerFactory.create(
                                     taskManagers.size()));
 
+            // 启动TaskManager
             taskExecutor.start(); // Call rpc to start task executor
             taskManagers.add(taskExecutor);
         }

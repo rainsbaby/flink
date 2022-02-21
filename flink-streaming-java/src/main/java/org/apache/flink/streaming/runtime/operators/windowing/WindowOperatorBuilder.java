@@ -60,7 +60,9 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 
 /**
- * A builder for creating {@link WindowOperator WindowOperators}.
+ * 创建WindowOperator的builder。
+ *
+ * <p>A builder for creating {@link WindowOperator WindowOperators}.
  *
  * @param <K> The type of key returned by the {@code KeySelector}.
  * @param <T> The type of the incoming elements.

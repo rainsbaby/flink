@@ -97,7 +97,7 @@ public class OneInputStreamTask<IN, OUT> extends StreamTask<OUT, OneInputStreamO
         int numberOfInputs = configuration.getNumberOfNetworkInputs();
 
         if (numberOfInputs > 0) {
-            // checkpoint相关
+            // 创建CheckpointedInputGate
             CheckpointedInputGate inputGate = createCheckpointedInputGate();
             Counter numRecordsIn = setupNumRecordsInCounter(mainOperator);
             DataOutput<IN> output = createDataOutput(numRecordsIn);
@@ -231,6 +231,7 @@ public class OneInputStreamTask<IN, OUT> extends StreamTask<OUT, OneInputStreamO
         public void emitRecord(StreamRecord<IN> record) throws Exception {
             numRecordsIn.inc();
             operator.setKeyContextElement(record);
+            // Operator处理record
             operator.processElement(record);
         }
 

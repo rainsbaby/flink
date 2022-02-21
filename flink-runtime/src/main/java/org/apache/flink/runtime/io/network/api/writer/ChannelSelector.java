@@ -21,6 +21,8 @@ package org.apache.flink.runtime.io.network.api.writer;
 import org.apache.flink.core.io.IOReadableWritable;
 
 /**
+ * 决定一条record应该被写入哪个channel。
+ * 如果是broadcast，则应当被写入每个channel。
  * The {@link ChannelSelector} determines to which logical channels a record should be written to.
  *
  * @param <T> the type of record which is sent through the attached output gate

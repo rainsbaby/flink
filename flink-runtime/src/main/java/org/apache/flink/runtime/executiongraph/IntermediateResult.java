@@ -35,12 +35,17 @@ import java.util.Map;
 import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
+/**
+ * JobVertex的输出，一个JobVertex可能哟0/n个输出。
+ * IntermediateResult可以包含0/n个输出分区IntermediateResultPartition。
+ */
 public class IntermediateResult {
 
     private final IntermediateDataSetID id;
 
     private final ExecutionJobVertex producer;
 
+    // 输出分区
     private final IntermediateResultPartition[] partitions;
 
     /**

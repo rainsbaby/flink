@@ -65,6 +65,7 @@ abstract class AbstractAlignedBarrierHandlerState implements BarrierHandlerState
         }
 
         if (controller.allBarriersReceived()) {
+            // 触发checkpoint
             return triggerGlobalCheckpoint(controller, checkpointBarrier);
         }
 
