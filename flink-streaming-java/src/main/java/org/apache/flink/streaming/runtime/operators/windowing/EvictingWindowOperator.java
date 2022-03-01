@@ -47,6 +47,7 @@ import java.util.Collection;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 包含Evictor的WindowOperator。
  * A {@link WindowOperator} that also allows an {@link Evictor} to be used.
  *
  * <p>The {@code Evictor} is used to remove elements from a pane before/after the evaluation of

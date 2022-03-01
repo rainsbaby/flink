@@ -289,6 +289,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
 
     @Override
     public void processElement(StreamRecord<IN> element) throws Exception {
+        //确定对应Window
         final Collection<W> elementWindows =
                 windowAssigner.assignWindows(
                         element.getValue(), element.getTimestamp(), windowAssignerContext);
@@ -384,11 +385,13 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
 
                 TriggerResult triggerResult = triggerContext.onElement(element);
 
+                // 调用Trigger判断是否提交Window内容
                 if (triggerResult.isFire()) {
                     ACC contents = windowState.get();
                     if (contents == null) {
                         continue;
                     }
+                    // 提交Window内容进行计算
                     emitWindowContents(actualWindow, contents);
                 }
 
@@ -409,12 +412,14 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
                 }
                 isSkippedElement = false;
 
+                // 加入Window中
                 windowState.setCurrentNamespace(window);
                 windowState.add(element.getValue());
 
                 triggerContext.key = key;
                 triggerContext.window = window;
 
+                // 调用Trigger判断是否提交Window内容
                 TriggerResult triggerResult = triggerContext.onElement(element);
 
                 if (triggerResult.isFire()) {
@@ -422,6 +427,7 @@ public class WindowOperator<K, IN, ACC, OUT, W extends Window>
                     if (contents == null) {
                         continue;
                     }
+                    // 提交Window内容进行计算
                     emitWindowContents(window, contents);
                 }
 

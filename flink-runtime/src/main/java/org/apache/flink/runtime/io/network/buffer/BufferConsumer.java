@@ -31,6 +31,8 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 读取BufferBuilder写的数据。
+ * 一个线程写入数据到BufferBuilder，另一个线程使用BufferConsumer来读取。
  * Not thread safe class for producing {@link Buffer}.
  *
  * <p>It reads data written by {@link BufferBuilder}. Although it is not thread safe and can be used

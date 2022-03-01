@@ -134,7 +134,7 @@ public abstract class ResourceManager<WorkerType extends ResourceIDRetrievable>
     /** Fatal error handler. */
     private final FatalErrorHandler fatalErrorHandler;
 
-    // todo by guixian: ???
+    // ResourceManager利用SlotManager管理所有slot
     /** The slot manager maintains the available slots. */
     private final SlotManager slotManager;
 

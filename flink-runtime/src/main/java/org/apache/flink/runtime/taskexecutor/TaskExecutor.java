@@ -228,7 +228,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
 
     // --------- task slot allocation table -----------
 
-    private final TaskSlotTable<Task> taskSlotTable; // todo by guixian: ???
+    private final TaskSlotTable<Task> taskSlotTable; // 管理所拥有的所有slot
 
     private final Map<JobID, UUID> currentSlotOfferPerJob = new HashMap<>();
 

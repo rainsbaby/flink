@@ -685,6 +685,7 @@ public abstract class NettyMessage {
         }
     }
 
+    // 增加Credit
     /** Incremental credit announcement from the client to the server. */
     static class AddCredit extends NettyMessage {
 

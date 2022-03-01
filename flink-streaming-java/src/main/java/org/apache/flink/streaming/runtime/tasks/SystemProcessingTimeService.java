@@ -52,7 +52,9 @@ public class SystemProcessingTimeService implements TimerService {
 
     // ------------------------------------------------------------------------
 
-    /** The executor service that schedules and calls the triggers of this task. */
+    /**
+     * 定时调度
+     * The executor service that schedules and calls the triggers of this task. */
     private final ScheduledThreadPoolExecutor timerService;
 
     private final ExceptionHandler exceptionHandler;

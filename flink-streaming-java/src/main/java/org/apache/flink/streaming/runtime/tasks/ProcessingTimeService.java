@@ -24,6 +24,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 定义processing time，并处理相关的action比如注册timer。
  * Defines the current processing time and handles all related actions, such as register timers for
  * tasks to be executed in the future.
  *

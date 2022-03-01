@@ -21,6 +21,7 @@ package org.apache.flink.api.common.eventtime;
 import org.apache.flink.annotation.Public;
 
 /**
+ * 给record添加event time timestamp，用于后续使用event time的function，如event time window等。
  * A {@code TimestampAssigner} assigns event time timestamps to elements. These timestamps are used
  * by all functions that operate on event time, for example event time windows.
  *

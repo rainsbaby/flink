@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
+ * 为element分配0或多个窗口。
  * A {@code WindowAssigner} assigns zero or more {@link Window Windows} to an element.
  *
  * <p>In a window operation, elements are grouped by their key (if available) and by the windows to

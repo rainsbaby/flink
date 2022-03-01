@@ -27,6 +27,7 @@ import org.apache.flink.streaming.runtime.operators.windowing.TimestampedValue;
 import java.io.Serializable;
 
 /**
+ * 在调用Trigger后，在WindowFunction计算前/后从pane中移除element
  * An {@code Evictor} can remove elements from a pane before/after the evaluation of WindowFunction
  * and after the window evaluation gets triggered by a {@link
  * org.apache.flink.streaming.api.windowing.triggers.Trigger}

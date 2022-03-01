@@ -345,6 +345,7 @@ class CreditBasedPartitionRequestClientHandler extends ChannelInboundHandlerAdap
     }
 
     /**
+     * 试图write&flush credit
      * Tries to write&flush unannounced credits for the next input channel in queue.
      *
      * <p>This method may be called by the first input channel enqueuing, or the complete future's

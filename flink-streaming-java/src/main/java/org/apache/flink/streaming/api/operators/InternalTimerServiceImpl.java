@@ -46,11 +46,15 @@ public class InternalTimerServiceImpl<K, N> implements InternalTimerService<N> {
 
     private final KeyContext keyContext;
 
-    /** Processing time timers that are currently in-flight. */
+    /**
+     * 基于processing time的优先队列
+     * Processing time timers that are currently in-flight. */
     private final KeyGroupedInternalPriorityQueue<TimerHeapInternalTimer<K, N>>
             processingTimeTimersQueue;
 
-    /** Event time timers that are currently in-flight. */
+    /**
+     * 基于event time的优先队列
+     * Event time timers that are currently in-flight. */
     private final KeyGroupedInternalPriorityQueue<TimerHeapInternalTimer<K, N>>
             eventTimeTimersQueue;
 

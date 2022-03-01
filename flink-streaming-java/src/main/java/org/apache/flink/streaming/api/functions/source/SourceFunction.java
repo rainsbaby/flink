@@ -174,6 +174,7 @@ public interface SourceFunction<T> extends Function, Serializable {
         void collect(T element);
 
         /**
+         * 提交一条数据，附加timestamp信息。
          * Emits one element from the source, and attaches the given timestamp.
          *
          * @param element The element to emit
@@ -183,6 +184,8 @@ public interface SourceFunction<T> extends Function, Serializable {
         void collectWithTimestamp(T element, long timestamp);
 
         /**
+         * 提交watermark。
+         * todo by guixian: ???
          * Emits the given {@link Watermark}. A Watermark of value {@code t} declares that no
          * elements with a timestamp {@code t' <= t} will occur any more. If further such elements
          * will be emitted, those elements are considered <i>late</i>.

@@ -116,7 +116,7 @@ class PartitionRequestServerHandler extends SimpleChannelInboundHandler<NettyMes
                 outboundQueue.cancel(request.receiverId);
             } else if (msgClazz == CloseRequest.class) {
                 outboundQueue.close();
-            } else if (msgClazz == AddCredit.class) {
+            } else if (msgClazz == AddCredit.class) { // AddCredit
                 AddCredit request = (AddCredit) msg;
 
                 outboundQueue.addCreditOrResumeConsumption(

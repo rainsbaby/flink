@@ -40,7 +40,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
-/** Factory for {@link ResultPartition} to use in {@link NettyShuffleEnvironment}. */
+/**
+ * 负责创建ResultPartition
+ * Factory for {@link ResultPartition} to use in {@link NettyShuffleEnvironment}. */
 public class ResultPartitionFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(ResultPartitionFactory.class);

@@ -81,6 +81,7 @@ public class RemoteInputChannel extends InputChannel {
     private final ConnectionManager connectionManager;
 
     /**
+     * 接收到的buffer。由网络I/O线程负责入队，由接收到task线程负责消费。
      * The received buffers. Received buffers are enqueued by the network I/O thread and the queue
      * is consumed by the receiving task thread.
      */
@@ -166,7 +167,9 @@ public class RemoteInputChannel extends InputChannel {
     // Consume
     // ------------------------------------------------------------------------
 
-    /** Requests a remote subpartition. */
+    /**
+     * 请求远端subpartition
+     * Requests a remote subpartition. */
     @VisibleForTesting
     @Override
     public void requestSubpartition(int subpartitionIndex)

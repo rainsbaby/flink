@@ -40,7 +40,7 @@ import java.util.function.Function;
 import static org.apache.flink.core.memory.MemoryUtils.getByteBufferAddress;
 
 /**
- * Flink管理的最小内存单元？
+ * Flink管理的最小内存单元。
  * 可以表示堆内内存、堆外内存
  * This class represents a piece of memory managed by Flink.
  *

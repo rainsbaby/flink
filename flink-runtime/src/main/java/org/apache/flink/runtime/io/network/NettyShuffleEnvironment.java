@@ -92,6 +92,7 @@ public class NettyShuffleEnvironment
     // 管理input channel的物理连接
     private final ConnectionManager connectionManager;
 
+    // 跟踪TaskManager当前生成/消费的所有partition
     private final ResultPartitionManager resultPartitionManager;
 
     private final FileChannelManager fileChannelManager;
@@ -99,8 +100,10 @@ public class NettyShuffleEnvironment
     // 管理InputGate
     private final Map<InputGateID, SingleInputGate> inputGatesById;
 
+    // 负责创建ResultPartition
     private final ResultPartitionFactory resultPartitionFactory;
 
+    // 负责创建SingleInputGate及内部的InputChannel
     private final SingleInputGateFactory singleInputGateFactory;
 
     private final Executor ioExecutor;

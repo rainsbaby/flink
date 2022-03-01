@@ -137,6 +137,7 @@ import static org.apache.flink.util.Preconditions.checkState;
 import static org.apache.flink.util.concurrent.FutureUtils.assertNoException;
 
 /**
+ * 所有流式任务的基础类。
  * 每个StreamTask执行一个/多个StreamOperator（如连续的map/flatmap/filter的组成operator chain）。 Operator
  * chain在一个线程中同步执行，因此有同样的stream paritition。 Operator chain中有一个head operator和多个chained operator。
  * 有one-input和two-input 类型的head operator。
@@ -212,7 +213,9 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
     /** The input processor. Initialized in {@link #init()} method. */
     @Nullable protected StreamInputProcessor inputProcessor;
 
-    /** the main operator that consumes the input streams of this task. */
+    /**
+     * 消费input stream的operator，即第一个operator
+     * the main operator that consumes the input streams of this task. */
     protected OP mainOperator;
 
     /** The chain of operators executed by this task. */

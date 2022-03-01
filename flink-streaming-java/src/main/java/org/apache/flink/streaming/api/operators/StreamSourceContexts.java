@@ -29,7 +29,9 @@ import org.apache.flink.util.Preconditions;
 
 import java.util.concurrent.ScheduledFuture;
 
-/** Source contexts for various stream time characteristics. */
+/**
+ * 根据不同的属性选择不同的SourceContext
+ * Source contexts for various stream time characteristics. */
 public class StreamSourceContexts {
 
     /**

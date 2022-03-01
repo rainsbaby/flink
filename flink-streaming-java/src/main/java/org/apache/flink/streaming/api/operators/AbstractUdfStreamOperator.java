@@ -51,7 +51,9 @@ public abstract class AbstractUdfStreamOperator<OUT, F extends Function>
 
     private static final long serialVersionUID = 1L;
 
-    /** The user function. */
+    /**
+     * 自定义处理函数
+     * The user function. */
     protected final F userFunction;
 
     public AbstractUdfStreamOperator(F userFunction) {

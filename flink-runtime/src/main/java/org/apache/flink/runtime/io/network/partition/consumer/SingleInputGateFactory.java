@@ -48,7 +48,9 @@ import java.io.IOException;
 
 import static org.apache.flink.runtime.shuffle.ShuffleUtils.applyWithShuffleTypeCheck;
 
-/** Factory for {@link SingleInputGate} to use in {@link NettyShuffleEnvironment}. */
+/**
+ * 负责创建SingleInputGate及内部的InputChannel。
+ * Factory for {@link SingleInputGate} to use in {@link NettyShuffleEnvironment}. */
 public class SingleInputGateFactory {
     private static final Logger LOG = LoggerFactory.getLogger(SingleInputGateFactory.class);
 

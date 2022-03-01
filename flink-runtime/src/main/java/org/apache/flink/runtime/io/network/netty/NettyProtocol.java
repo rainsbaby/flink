@@ -24,7 +24,9 @@ import org.apache.flink.runtime.io.network.partition.ResultPartitionProvider;
 
 import org.apache.flink.shaded.netty4.io.netty.channel.ChannelHandler;
 
-/** Defines the server and client channel handlers, i.e. the protocol, used by netty. */
+/**
+ * 定义Netty Server和Client中的channel handler。
+ * Defines the server and client channel handlers, i.e. the protocol, used by netty. */
 public class NettyProtocol {
 
     private final NettyMessage.NettyMessageEncoder messageEncoder =
@@ -40,6 +42,7 @@ public class NettyProtocol {
     }
 
     /**
+     * Server端channel handler
      * Returns the server channel handlers.
      *
      * <pre>
@@ -87,6 +90,7 @@ public class NettyProtocol {
     }
 
     /**
+     * Client端channel handler
      * Returns the client channel handlers.
      *
      * <pre>

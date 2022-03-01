@@ -26,6 +26,7 @@ import org.apache.flink.api.common.typeutils.base.LongSerializer;
 import org.apache.flink.streaming.api.windowing.windows.Window;
 
 /**
+ * element个数达到某个值时触发
  * A {@link Trigger} that fires once the count of elements in a pane reaches the given count.
  *
  * @param <W> The type of {@link Window Windows} on which this trigger can operate.

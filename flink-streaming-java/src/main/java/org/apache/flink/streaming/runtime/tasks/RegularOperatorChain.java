@@ -183,6 +183,7 @@ public class RegularOperatorChain<OUT, OP extends StreamOperator<OUT>>
             if (!operatorWrapper.isClosed()) {
                 operatorSnapshotsInProgress.put(
                         operatorWrapper.getStreamOperator().getOperatorID(),
+                        // snapshot内部细节
                         buildOperatorSnapshotFutures(
                                 checkpointMetaData,
                                 checkpointOptions,

@@ -32,7 +32,12 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 /**
- * 定义流式应用的状态如何在本地存储。
+ * 定义流式应用的状态如何在集群内存储。
+ * HashMapStateBackend在TaskManager的内存中存储state，轻量级且没有额外的依赖。
+ * EmbeddedRocksDBStateBackend在RocksDB中存储state，能够存储大量的数据，只受限于TaskManager的磁盘容量。
+ *
+ * <p>本接口创建的CheckpointableKeyedStateBackend和OperatorStateBackend，定义了key state和operator state
+ * 的存储方式。同时定义了如何checkpoint state。
  *
  * <p>A <b>State Backend</b> defines how the state of a streaming application is stored locally
  * within the cluster. Different State Backends store their state in different fashions, and use

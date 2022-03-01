@@ -1321,7 +1321,8 @@ public class Task
     // ------------------------------------------------------------------------
 
     /**
-     * 触发checkpoint barrier Calls the invokable to trigger a checkpoint.
+     * 触发checkpoint barrier。
+     * Calls the invokable to trigger a checkpoint.
      *
      * @param checkpointID The ID identifying the checkpoint.
      * @param checkpointTimestamp The timestamp associated with the checkpoint.

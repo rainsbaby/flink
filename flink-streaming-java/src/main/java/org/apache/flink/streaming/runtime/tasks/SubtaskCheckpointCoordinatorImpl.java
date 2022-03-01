@@ -291,6 +291,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
             initInputsCheckpoint(metadata.getCheckpointId(), options);
         }
 
+        // checkpoint准备工作
         // Step (1): Prepare the checkpoint, allow operators to do some pre-barrier work.
         //           The pre-barrier work should be nothing or minimal in the common case.
         operatorChain.prepareSnapshotPreBarrier(metadata.getCheckpointId());
@@ -608,7 +609,7 @@ class SubtaskCheckpointCoordinatorImpl implements SubtaskCheckpointCoordinator {
                         checkpointId, checkpointOptions.getTargetLocation());
 
         try {
-            // snapshot todo by guixian:???
+            // 执行具体的snapshot todo by guixian:???
             operatorChain.snapshotState(
                     operatorSnapshotsInProgress,
                     checkpointMetaData,

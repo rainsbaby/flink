@@ -59,6 +59,7 @@ public class SourceStreamTask<
                 OUT, SRC extends SourceFunction<OUT>, OP extends StreamSource<OUT, SRC>>
         extends StreamTask<OUT, OP> {
 
+    //生成Source的Function线程
     private final LegacySourceFunctionThread sourceThread;
     private final Object lock;
 
@@ -171,6 +172,12 @@ public class SourceStreamTask<
         // does not hold any resources, so no cleanup needed
     }
 
+    /**
+     * Source Task中主要逻辑
+     * @param controller controller object for collaborative interaction between the action and the
+     *     stream task.
+     * @throws Exception
+     */
     @Override
     protected void processInput(MailboxDefaultAction.Controller controller) throws Exception {
 

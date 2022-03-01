@@ -228,7 +228,7 @@ public class FromElementsFunction<T>
             }
 
             synchronized (lock) {
-                ctx.collect(next);
+                ctx.collect(next); // 提交record
                 numElementsEmitted++;
             }
         }

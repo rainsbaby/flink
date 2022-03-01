@@ -101,6 +101,7 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
 import static org.apache.flink.util.Preconditions.checkState;
 
 /**
+ * 基于StreamExecutionEnvironment中Transformations来生成StreamGraph。
  * A generator that generates a {@link StreamGraph} from a graph of {@link Transformation}s.
  *
  * <p>This traverses the tree of {@code Transformations} starting from the sinks. At each

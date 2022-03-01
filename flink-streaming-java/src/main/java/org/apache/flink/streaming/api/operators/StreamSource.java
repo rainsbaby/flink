@@ -96,6 +96,7 @@ public class StreamSource<OUT, SRC extends SourceFunction<OUT>>
         final long watermarkInterval =
                 getRuntimeContext().getExecutionConfig().getAutoWatermarkInterval();
 
+        // 根据配置不同选择不同的SourceContext
         this.ctx =
                 StreamSourceContexts.getSourceContext(
                         timeCharacteristic,
@@ -107,7 +108,7 @@ public class StreamSource<OUT, SRC extends SourceFunction<OUT>>
                         emitProgressiveWatermarks);
 
         try {
-            userFunction.run(ctx);
+            userFunction.run(ctx); // 执行SourceFunction
         } finally {
             if (latencyEmitter != null) {
                 latencyEmitter.close();
