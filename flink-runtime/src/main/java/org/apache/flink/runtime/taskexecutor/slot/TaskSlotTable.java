@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
+ * TaskSlot的容器类，维护task和slot的索引以便于快速访问。
  * Container for multiple {@link TaskSlot} instances. Additionally, it maintains multiple indices
  * for faster access to tasks and sets of allocated slots.
  *

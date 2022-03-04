@@ -34,6 +34,7 @@ import org.apache.flink.streaming.runtime.watermarkstatus.WatermarkStatus;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * 负责从event中提取出timestamp和生成watermark。
  * A stream operator that may do one or both of the following: extract timestamps from events and
  * generate watermarks.
  *

@@ -97,7 +97,9 @@ public class AsyncWaitOperator<IN, OUT>
     /** Recovered input stream elements. */
     private transient ListState<StreamElement> recoveredStreamElements;
 
-    /** Queue, into which to store the currently in-flight stream elements. */
+    /**
+     * 队列，存储处理中的element
+     * Queue, into which to store the currently in-flight stream elements. */
     private transient StreamElementQueue<OUT> queue;
 
     /** Mailbox executor used to yield while waiting for buffers to empty. */
@@ -193,6 +195,7 @@ public class AsyncWaitOperator<IN, OUT>
             element = record;
         }
 
+        // 先加入队列，再发起异步调用
         // add element first to the queue
         final ResultFuture<OUT> entry = addToWorkQueue(element);
 
@@ -210,6 +213,7 @@ public class AsyncWaitOperator<IN, OUT>
     public void processWatermark(Watermark mark) throws Exception {
         addToWorkQueue(mark);
 
+        // watermark到达时，表示没有更早的element，可以直接输出watermark之前的element
         // watermarks are always completed
         // if there is no prior element, we can directly emit them
         // this also avoids watermarks being held back until the next element has been processed
@@ -363,8 +367,10 @@ public class AsyncWaitOperator<IN, OUT>
                 timeoutTimer.cancel(true);
             }
 
+            // 更新队列中entry结果
             // update the queue entry with the result
             resultFuture.complete(results);
+            // 输出队列中所有已完成的element
             // now output all elements from the queue that have been completed (in the correct
             // order)
             outputCompletedElement();

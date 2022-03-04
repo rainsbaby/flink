@@ -152,6 +152,7 @@ public class DefaultExecutionGraph implements ExecutionGraph, InternalExecutionG
     /** The currently executed tasks, for callbacks. */
     private final Map<ExecutionAttemptID, Execution> currentExecutions;
 
+    // job状态监听者
     /**
      * Listeners that receive messages when the entire job switches it status (such as from RUNNING
      * to FINISHED).

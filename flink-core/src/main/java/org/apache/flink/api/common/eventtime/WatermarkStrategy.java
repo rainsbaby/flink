@@ -27,6 +27,7 @@ import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
 
 /**
+ * Source中Watermark生成策略。WatermarkGenerator和TimestampAssigner的工厂类。
  * The WatermarkStrategy defines how to generate {@link Watermark}s in the stream sources. The
  * WatermarkStrategy is a builder/factory for the {@link WatermarkGenerator} that generates the
  * watermarks and the {@link TimestampAssigner} which assigns the internal timestamp of a record.

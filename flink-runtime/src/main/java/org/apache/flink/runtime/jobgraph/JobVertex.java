@@ -57,6 +57,7 @@ public class JobVertex implements java.io.Serializable {
     private final JobVertexID id;
 
     /**
+     * 节点包含的所有operator
      * The IDs of all operators contained in this vertex.
      *
      * <p>The ID pairs are stored depth-first post-order; for the forking chain below the ID's would
@@ -72,13 +73,19 @@ public class JobVertex implements java.io.Serializable {
      */
     private final List<OperatorIDPair> operatorIDs;
 
-    /** List of produced data sets, one per writer. */
+    /**
+     * 产生的数据集
+     * List of produced data sets, one per writer. */
     private final ArrayList<IntermediateDataSet> results = new ArrayList<>();
 
-    /** List of edges with incoming data. One per Reader. */
+    /**
+     * 输入
+     * List of edges with incoming data. One per Reader. */
     private final ArrayList<JobEdge> inputs = new ArrayList<>();
 
-    /** The list of factories for operator coordinators. */
+    /**
+     * 运行时operator的管理者。
+     * The list of factories for operator coordinators. */
     private final ArrayList<SerializedValue<OperatorCoordinator.Provider>> operatorCoordinators =
             new ArrayList<>();
 
@@ -97,7 +104,9 @@ public class JobVertex implements java.io.Serializable {
     /** Custom configuration passed to the assigned task at runtime. */
     private Configuration configuration;
 
-    /** The class of the invokable. */
+    /**
+     * 可触发的class名。
+     * The class of the invokable. */
     private String invokableClassName;
 
     /** Indicates of this job vertex is stoppable or not. */

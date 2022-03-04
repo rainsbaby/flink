@@ -61,6 +61,7 @@ public class StreamOperatorFactoryUtil {
             ((YieldingOperatorFactory<?>) operatorFactory).setMailboxExecutor(mailboxExecutor);
         }
 
+        // 生成Timer
         final Supplier<ProcessingTimeService> processingTimeServiceFactory =
                 () ->
                         containingTask

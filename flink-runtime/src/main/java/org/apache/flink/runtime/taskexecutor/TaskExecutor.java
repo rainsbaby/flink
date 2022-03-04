@@ -709,6 +709,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
                 throw new TaskSubmissionException("Could not submit task.", e);
             }
 
+            // Task创建
             Task task =
                     new Task(
                             jobInformation,
@@ -751,6 +752,7 @@ public class TaskExecutor extends RpcEndpoint implements TaskExecutorGateway {
             boolean taskAdded;
 
             try {
+                // 管理task
                 taskAdded = taskSlotTable.addTask(task);
             } catch (SlotNotFoundException | SlotNotActiveException e) {
                 throw new TaskSubmissionException("Could not submit task.", e);

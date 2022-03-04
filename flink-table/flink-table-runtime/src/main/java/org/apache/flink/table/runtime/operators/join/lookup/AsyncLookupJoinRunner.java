@@ -40,7 +40,9 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-/** The async join runner to lookup the dimension table. */
+/**
+ * 异步join，用于查询dimension table
+ * The async join runner to lookup the dimension table. */
 public class AsyncLookupJoinRunner extends RichAsyncFunction<RowData, RowData> {
     private static final long serialVersionUID = -6664660022391632480L;
 

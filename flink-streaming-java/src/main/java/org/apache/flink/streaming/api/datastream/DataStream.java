@@ -838,6 +838,7 @@ public class DataStream<T> {
     // ------------------------------------------------------------------------
 
     /**
+     * 为stream配置Timestamp和Watermark
      * Assigns timestamps to the elements in the data stream and generates watermarks to signal
      * event time progress. The given {@link WatermarkStrategy} is used to create a {@link
      * TimestampAssigner} and {@link WatermarkGenerator}.

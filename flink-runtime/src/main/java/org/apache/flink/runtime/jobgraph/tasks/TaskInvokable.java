@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import java.util.concurrent.Future;
 
 /**
+ * Task中可执行部分
  * An invokable part of the task.
  *
  * <p>The TaskManager first calls the {@link #restore} method when executing a task. If the call

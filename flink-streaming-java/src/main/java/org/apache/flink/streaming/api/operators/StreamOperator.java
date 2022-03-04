@@ -28,7 +28,7 @@ import org.apache.flink.streaming.runtime.streamrecord.StreamRecord;
 import java.io.Serializable;
 
 /**
- * Stream操作符的基类。
+ * Stream operator的基类。
  * 实现类可以实现OneInputStreamOperator或TwoInputStreamOperator接口。
  * 抽象子类AbstractUdfStreamOperator，提供类自定义处理函数的实现。
  *

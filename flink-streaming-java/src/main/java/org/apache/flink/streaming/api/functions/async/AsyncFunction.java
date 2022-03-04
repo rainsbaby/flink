@@ -25,6 +25,9 @@ import java.io.Serializable;
 import java.util.concurrent.TimeoutException;
 
 /**
+ * 触发异步I/O操作的Function。
+ * 每次调用asyncInvoke进行异步调用时，触发一个异步I/O，调用发起完成后，可通过ResultFuture.complete获取结果。
+ * 每个异步操作的上下文，在触发asyncInvoke后立刻保存在operator，只要内部buffer足够就不会阻塞流的正常流入。
  * A function to trigger Async I/O operation.
  *
  * <p>For each #asyncInvoke, an async io operation can be triggered, and once it has been done, the

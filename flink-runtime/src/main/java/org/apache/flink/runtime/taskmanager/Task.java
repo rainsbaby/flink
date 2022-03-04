@@ -578,7 +578,7 @@ public class Task
         executingThread.start();
     }
 
-    // todo by guixian: ??? 核心内容
+    // 核心内容
     /** The core work method that bootstraps the task and executes its code. */
     @Override
     public void run() {

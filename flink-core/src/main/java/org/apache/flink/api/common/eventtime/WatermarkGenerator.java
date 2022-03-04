@@ -22,6 +22,7 @@ import org.apache.flink.annotation.Public;
 import org.apache.flink.api.common.ExecutionConfig;
 
 /**
+ * 生成Watermark，可基于event到达或周期性生成。
  * The {@code WatermarkGenerator} generates watermarks either based on events or periodically (in a
  * fixed interval).
  *

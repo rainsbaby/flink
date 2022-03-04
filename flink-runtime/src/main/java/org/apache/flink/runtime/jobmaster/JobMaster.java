@@ -209,7 +209,8 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
 
     // ------------------------------------------------------------------------
 
-    // JobMaster创建，核心内容 todo by guixian: ???
+    // JobMaster创建，核心内容
+    // 此时生成ExecutionGraph
     public JobMaster(
             RpcService rpcService,
             JobMasterId jobMasterId,
@@ -886,7 +887,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
                 jobGraph.getJobID(),
                 getFencingToken());
 
-        startScheduling(); // 通过SchedulerNG开始生成ExecutionGraph，执行job
+        startScheduling(); // 通过SchedulerNG开始调度ExecutionGraph，执行job
     }
 
     private void startJobMasterServices() throws Exception {
@@ -895,7 +896,7 @@ public class JobMaster extends PermanentlyFencedRpcEndpoint<JobMasterId>
             this.resourceManagerHeartbeatManager =
                     createResourceManagerHeartbeatManager(heartbeatServices);
 
-            // todo by guixian: ???
+            // 启动slot pool
             // start the slot pool make sure the slot pool now accepts messages for this leader
             slotPoolService.start(getFencingToken(), getAddress(), getMainThreadExecutor());
 

@@ -771,7 +771,7 @@ public abstract class StreamTask<OUT, OP extends StreamOperator<OUT>>
 
         scheduleBufferDebloater();
 
-        // todo by guixian: Operator主要逻辑执行
+        // Operator主要逻辑执行，无限循环处理输入的流数据
         // let the task do its work
         runMailboxLoop();
 

@@ -32,6 +32,7 @@ import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
 import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 import org.apache.flink.streaming.api.operators.OutputTypeConfigurable;
+import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.util.IterableUtils;
 import org.apache.flink.util.Preconditions;
 
@@ -229,6 +230,8 @@ public class FromElementsFunction<T>
 
             synchronized (lock) {
                 ctx.collect(next); // 提交record
+//                ctx.collectWithTimestamp(next, System.currentTimeMillis()); // 提交record+timestamp
+//                ctx.emitWatermark(new Watermark(System.currentTimeMillis())); // 提交watermark
                 numElementsEmitted++;
             }
         }

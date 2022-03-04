@@ -70,13 +70,16 @@ public class StreamNode {
     private KeySelector<?, ?>[] statePartitioners = new KeySelector[0];
     private TypeSerializer<?> stateKeySerializer;
 
+    // 节点operator信息，不同operator对应不同的factory
     private StreamOperatorFactory<?> operatorFactory;
     private TypeSerializer<?>[] typeSerializersIn = new TypeSerializer[0];
     private TypeSerializer<?> typeSerializerOut;
 
+    // 上游和下游
     private List<StreamEdge> inEdges = new ArrayList<StreamEdge>();
     private List<StreamEdge> outEdges = new ArrayList<StreamEdge>();
 
+    //节点中可执行部分
     private final Class<? extends TaskInvokable> jobVertexClass;
 
     private InputFormat<?, ?> inputFormat;
